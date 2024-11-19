@@ -38,14 +38,39 @@ header a {
 
 .grid-item {
   display: flex;
-  flex: 50%;
+  flex: 42%;
   justify-content: center;
   flex-direction: row;
-  ;
+  margin: 2%;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+figcaption {
+  text-align: center;
 }
 
 @media (max-width: 800px) {
   .grid-item {
     flex: 100%;
   }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+.column {
+  flex: 30%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
 }
