@@ -1,0 +1,31 @@
+nav ul {
+    display:flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem;
+}
+
+nav ul li { 
+margin: 1rem 2%;
+}
+
+nav ul li a { 
+    margin: 0rem;
+    padding: 1rem;
+  font: 800 1.25rem 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  text-decoration: none;
+  color:black;
+}
+
+header {
+font: 800 1.25rem 'Helvetica Neue', Helvetica, Arial, sans-serif;
+padding: 1rem;
+margin: 1rem 0rem;
+display: flex;
+justify-content: space-between;
+}
+
+header a {
+text-decoration: none;
+color: black;
+}
