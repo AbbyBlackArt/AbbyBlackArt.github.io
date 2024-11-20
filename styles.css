@@ -80,7 +80,7 @@ figcaption {
 
 .column {
   flex: 30%;
-  padding: 0 4px;
+  padding: 0 15px;
 }
 
 .column img {
@@ -94,7 +94,7 @@ h1 {
 }
 
 .column a {
-  margin-top: 8px;
+  margin-top: 30px;
   position: relative;
   display: inline-block;
 }
@@ -119,4 +119,22 @@ h1 {
   justify-content: center;
   transition: opacity 0.5s ease-in-out;
   text-align: center;
+}
+
+.container img {
+  max-width: 1200px;
+}
+
+.grid-item-about {
+  display: flex;
+  flex: 42%;
+  justify-content: center;
+  flex-direction: row;
+  margin: 2%;
+}
+
+
+.grid-item-about p {
+  text-align: center;
+  margin-top: 35%;
 }
