@@ -13,12 +13,12 @@ nav ul li a {
   padding: 1rem;
   font: 800 1.75rem 'Garamond', serif;
   text-decoration: none;
-  color: black;
+  color: rgb(0, 0, 0);
 }
 
 header {
   font: 800 1.75rem 'Garamond', serif;
-  padding: 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
 }
