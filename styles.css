@@ -97,12 +97,12 @@ h1 {
   margin-top: 30px;
   position: relative;
   display: inline-block;
+  cursor: zoom-in;
 }
 
 .column a:hover .caption {
   opacity: 1;
   transition: opacity 0.5s ease-in-out;
-  cursor: zoom-in;
 }
 
 .caption {
@@ -135,6 +135,11 @@ h1 {
 
 .grid-item-about p {
   margin-top: 20%;
+}
+
+.grid-item-about img {
+  max-width: 25rem;
+  margin-top: 10%;
 }
 
 #CV {
