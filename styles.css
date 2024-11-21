@@ -126,7 +126,6 @@ h1 {
 }
 
 .grid-item-about {
-  display: flex;
   flex: 42%;
   justify-content: center;
   flex-direction: row;
@@ -135,10 +134,15 @@ h1 {
 
 
 .grid-item-about p {
-  text-align: center;
-  margin-top: 35%;
+  margin-top: 20%;
 }
 
-.cover-image {
+#CV {
+  margin-top: 0;
   text-align: center;
+  line-height: 25px;
+}
+
+#CV a {
+  color: rgba(93, 67, 51, 0.8)
 }
