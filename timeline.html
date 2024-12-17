@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylestimeline.css" />
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"
+        integrity="sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="js/fslightbox.js"></script>
+
+    <script id="image-template" type="text/x-handlebars-template">
+        <div class="image-container">
+        <a data-fslightbox href="{{href}}">
+            <img loading="lazy" src="{{href}}" alt="{{alttext}}" />
+            <div class="caption">
+                <p><strong>Time:</strong> {{time}} <br><strong>Weather:</strong> {{weather}} <br><strong>Location:</strong> {{location}} <br><strong>State of Being:</strong> {{state_of_being}} <br><strong>Phone Battery:</strong> {{phone_battery}}
+                </p>
+            </div>
+        </a>
+        </div>
+    </script>
+    <script>
+        var source = document.getElementById("image-template").innerHTML;
+        var template = Handlebars.compile(source);
+
+        var wednesday = {
+            title: "<h1><strong>Wednesday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1.wed.8am.jpg",
+                    alttext: "poop",
+                    time: "8 am",
+                    weather: "32 degrees, partly cloudy",
+                    location: "Provo City Center Temple",
+                    state_of_being: "content with a slightly burnt tongue",
+                    phone_battery: "86%"
+                },
+                {
+                    href: "/images/TImelineImages/2.Wed9am.jpg",
+                    alttext: "poop",
+                    time: "9:02 am",
+                    weather: "32 degrees, mostly cloudy",
+                    location: "Home, Kitchen",
+                    state_of_being: "full of yummy donuts",
+                    phone_battery: "78%"
+                },
+                {
+                    href: "/images/TImelineImages/3.Wed10am.jpg",
+                    alttext: "poop",
+                    time: "10:01 am",
+                    weather: "34 degrees, partly cloudy",
+                    location: "Home, Kitchen",
+                    state_of_being: "quite good",
+                    phone_battery: "75%"
+                },
+                {
+                    href: "/images/TImelineImages/4.Wed11am.jpg",
+                    alttext: "poop",
+                    time: "11:01 am",
+                    weather: "35 degrees, cloudy",
+                    location: "Home, Kitchen",
+                    state_of_being: "smelling delicious berry pie filling, mildly stressed",
+                    phone_battery: "66%"
+                },
+                {
+                    href: "/images/TImelineImages/5.Wed12pm.jpg",
+                    alttext: "poop",
+                    time: "12:02 pm",
+                    weather: "36 degrees, cloudy",
+                    location: "Home, Living Room",
+                    state_of_being: "positive side of average",
+                    phone_battery: "55%"
+                },
+                {
+                    href: "/images/TImelineImages/6.Wed.1pm.jpg",
+                    alttext: "poop",
+                    time: "1:01 pm",
+                    weather: "38 degrees, partly cloudy",
+                    location: "Home, Living Room",
+                    state_of_being: "pleasant",
+                    phone_battery: "48%"
+                },
+                {
+                    href: "/images/TImelineImages/7.Wed.2pm.jpg",
+                    alttext: "poop",
+                    time: "2:10 pm",
+                    weather: "36 degrees, mostly cloudy",
+                    location: "Home, Kitchen",
+                    state_of_being: "excited, but with a slightly raw feeling throat?",
+                    phone_battery: "42%"
+                },
+                {
+                    href: "/images/TImelineImages/8.Wed3pm.jpg",
+                    alttext: "poop",
+                    time: "3:00 pm",
+                    weather: "38 degrees, mostly cloudy",
+                    location: "Home, Kitchen",
+                    state_of_being: "well fed, a bit tired, mildly sore throat again?",
+                    phone_battery: "38%"
+                },
+                {
+                    href: "/images/TImelineImages/9.Wed4pm.jpg",
+                    alttext: "poop",
+                    time: "4:06 pm",
+                    weather: "39 degrees, partly cloudy",
+                    location: "Home, Kitchen",
+                    state_of_being: "quite tired, possibly getting a cold?",
+                    phone_battery: "29%"
+                },
+                {
+                    href: "/images/TImelineImages/10.Wed.5pm.jpg",
+                    alttext: "poop",
+                    time: "5:01 pm",
+                    weather: "38 degrees, cloudy",
+                    location: "Home, Living Room",
+                    state_of_being: "tired",
+                    phone_battery: "13%"
+                },
+                {
+                    href: "/images/TImelineImages/11.Wed.6pm.jpg",
+                    alttext: "poop",
+                    time: "5:57 pm",
+                    weather: "35 degrees, darkness",
+                    location: "Home, Kitchen",
+                    state_of_being: "quite tired",
+                    phone_battery: "25%"
+                },
+                {
+                    href: "/images/TImelineImages/12.Wed.7pm.jpg",
+                    alttext: "poop",
+                    time: "7:00 pm",
+                    weather: "34 degrees, darkness",
+                    location: "Home, Living Room",
+                    state_of_being: "tired, small cough, sore throat, full of yummy pie",
+                    phone_battery: "33%"
+                },
+                {
+                    href: "/images/TImelineImages/13.Wed.8pm.jpg",
+                    alttext: "poop",
+                    time: "8:00 pm",
+                    weather: "32 degrees, dark",
+                    location: "Home, Living Room",
+                    state_of_being: "tired, sore throat, quite likely have a cold now",
+                    phone_battery: "28%"
+                }
+            ]
+        }
+
+        var thursday = {
+            title: "<h1><strong>Thursday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1.Thur.8am.jpg",
+                    alttext: "poop",
+                    time: "8:10 am",
+                    weather: "24 degrees, seems cloudy, don't want to get up to check",
+                    location: "Home, Living Room",
+                    state_of_being: "still tired, dry raw throat, slight headache",
+                    phone_battery: "95%"
+                },
+                {
+                    href: "/images/TImelineImages/3.Thu.9am.jpg",
+                    alttext: "poop",
+                    time: "9:04 am",
+                    weather: "26 degrees, looks sunny I think",
+                    location: "Home, Living Room",
+                    state_of_being: "slightly more functional",
+                    phone_battery: "88%"
+                },
+                {
+                    href: "/images/TImelineImages/4.Thu.11am.jpg",
+                    alttext: "poop",
+                    time: "11:05 am",
+                    weather: "32 degrees, pretty sunny",
+                    location: "Home, Living Room",
+                    state_of_being: "antsy",
+                    phone_battery: "67%"
+                },
+                {
+                    href: "/images/TImelineImages/5.Thu.12pm.jpg",
+                    alttext: "poop",
+                    time: "12:00 pm",
+                    weather: "34 degrees, partly cloudy",
+                    location: "Home, Living Room",
+                    state_of_being: "eh",
+                    phone_battery: "60%"
+                },
+                {
+                    href: "/images/TImelineImages/6.Thu.1pm.jpg",
+                    alttext: "poop",
+                    time: "1:00 pm",
+                    weather: "35 degrees, cloudy",
+                    location: "Home, Living Room",
+                    state_of_being: "tired",
+                    phone_battery: "58%"
+                },
+                {
+                    href: "/images/TImelineImages/7.Thu.2pm.jpg",
+                    alttext: "poop",
+                    time: "2:01 pm",
+                    weather: "35 degrees, partly cloudy",
+                    location: "Home, Living Room",
+                    state_of_being: "tired, sore throat, hungry",
+                    phone_battery: "56%"
+                },
+                {
+                    href: "/images/TImelineImages/8.Thu.3pm.jpg",
+                    alttext: "poop",
+                    time: "3:00 pm",
+                    weather: "35 degrees, mostly sunny",
+                    location: "Home, Front Doormat",
+                    state_of_being: "happy to have made it out of the house",
+                    phone_battery: "50%"
+                },
+                {
+                    href: "/images/TImelineImages/9.Thu.4pm.jpg",
+                    alttext: "poop",
+                    time: "4:02 pm",
+                    weather: "35 degrees, probably partly cloudy, don't feel like moving",
+                    location: "Home, Bedroom",
+                    state_of_being: "exhausted",
+                    phone_battery: "46%"
+                },
+                {
+                    href: "/images/TImelineImages/10.Thu.5pm.jpg",
+                    alttext: "poop",
+                    time: "5:02 pm",
+                    weather: "33 degrees, cloudy?",
+                    location: "Home, Bedroom",
+                    state_of_being: "so tired",
+                    phone_battery: "43%"
+                },
+                {
+                    href: "/images/TImelineImages/11.Thu.6pm.jpg",
+                    alttext: "poop",
+                    time: "6:00 pm",
+                    weather: "31 degrees, dark",
+                    location: "Home, Bedroom",
+                    state_of_being: "tired",
+                    phone_battery: "41%"
+                },
+                {
+                    href: "/images/TImelineImages/12.Thu.7pm.jpg",
+                    alttext: "poop",
+                    time: "7:02 pm",
+                    weather: "29 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "functional",
+                    phone_battery: "32%"
+                },
+                {
+                    href: "/images/TImelineImages/13.Thur.8pm.jpg",
+                    alttext: "poop",
+                    time: "8:00 pm",
+                    weather: "27 degrees, dark",
+                    location: "Home, Living Room",
+                    state_of_being: "not too amazing, but functioning",
+                    phone_battery: "25%"
+                },
+            ]
+        }
+
+        var friday = {
+            title: "<h1><strong>Friday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1.Fri.8am.jpg",
+                    alttext: "poop",
+                    time: "8:08 am",
+                    weather: "15 degrees, seems possibly cloudy",
+                    location: "Home, Bedroom",
+                    state_of_being: "bleh",
+                    phone_battery: "94%"
+                },
+                {
+                    href: "/images/TImelineImages/2.Fri.9am.jpg",
+                    alttext: "poop",
+                    time: "9:03 am",
+                    weather: "17 degrees, seems sunny",
+                    location: "Home, Kitchen",
+                    state_of_being: "alive",
+                    phone_battery: "86%"
+                },
+                {
+                    href: "/images/TImelineImages/3.Fri.10am.jpg",
+                    alttext: "poop",
+                    time: "10:04 am",
+                    weather: "24 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "sleepy",
+                    phone_battery: "81%"
+                },
+                {
+                    href: "/images/TImelineImages/4.Fri.11am.jpg",
+                    alttext: "poop",
+                    time: "11:02 am",
+                    weather: "26 degrees, cloudy",
+                    location: "Home, Bedroom",
+                    state_of_being: "rested",
+                    phone_battery: "79%"
+                },
+                {
+                    href: "/images/TImelineImages/5.Fri.12pm.jpg",
+                    alttext: "poop",
+                    time: "12:00 pm",
+                    weather: "31 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "meh",
+                    phone_battery: "68%"
+                },
+                {
+                    href: "/images/TImelineImages/6.Fri.1pm.jpg",
+                    alttext: "poop",
+                    time: "1:00 pm",
+                    weather: "33 degrees, sunny",
+                    location: "Home, Living Room",
+                    state_of_being: "still sick",
+                    phone_battery: "64%"
+                },
+                {
+                    href: "/images/TImelineImages/7.Fri.2pm.jpg",
+                    alttext: "poop",
+                    time: "2:00 pm",
+                    weather: "33 degrees, sunny",
+                    location: "Home, Living Room",
+                    state_of_being: "fairly decent",
+                    phone_battery: "60%"
+                },
+                {
+                    href: "/images/TImelineImages/8.Fri.3pm.jpg",
+                    alttext: "poop",
+                    time: "3:00 pm",
+                    weather: "34 degrees, sunny",
+                    location: "2230 N",
+                    state_of_being: "glad to be outside",
+                    phone_battery: "55%"
+                },
+                {
+                    href: "/images/TImelineImages/9.Fri.4pm.jpg",
+                    alttext: "poop",
+                    time: "4:01 pm",
+                    weather: "36 degrees, probably still sunny",
+                    location: "Old Navy",
+                    state_of_being: "hot and tired but also excited",
+                    phone_battery: "48%"
+                },
+                {
+                    href: "/images/TImelineImages/10.Fri.5pm.jpg",
+                    alttext: "poop",
+                    time: "5:10 pm",
+                    weather: "35 degrees, sun setting but clear sky",
+                    location: "Costco",
+                    state_of_being: "holding up ok, ready to head home",
+                    phone_battery: "33%"
+                },
+                {
+                    href: "/images/TImelineImages/11.Fri.6pm.jpg",
+                    alttext: "poop",
+                    time: "6:08 pm",
+                    weather: "33 degrees, very dark",
+                    location: "Near Univ Mall",
+                    state_of_being: "getting tuckered out",
+                    phone_battery: "25%"
+                },
+                {
+                    href: "/images/TImelineImages/12.Fri.7pm.jpg",
+                    alttext: "poop",
+                    time: "7:02 pm",
+                    weather: "25 degrees, darrrk",
+                    location: "Home, Living Room",
+                    state_of_being: "quite tired",
+                    phone_battery: "17%"
+                },
+                {
+                    href: "/images/TImelineImages/13.Fri.8pm.jpg",
+                    alttext: "poop",
+                    time: "8:00 pm",
+                    weather: "23 degrees, night time",
+                    location: "Home, Living Room",
+                    state_of_being: "exhausted and sneezy",
+                    phone_battery: "13%"
+                }
+            ]
+        }
+
+        var saturday = {
+            title: "<h1><strong>Saturday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1Sat..804am.jpg",
+                    alttext: "poop",
+                    time: "8:04 am",
+                    weather: "23 degrees, no idea",
+                    location: "Home, Bedroom",
+                    state_of_being: "eh, still sick",
+                    phone_battery: "98%"
+                },
+                {
+                    href: "/images/TImelineImages/2Sat.937am.jpg",
+                    alttext: "poop",
+                    time: "9:37 am",
+                    weather: "27 degrees, looks sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "bleh gross sick",
+                    phone_battery: "92%"
+                },
+                {
+                    href: "/images/TImelineImages/3Sat.1000am.jpg",
+                    alttext: "poop",
+                    time: "10:00 am",
+                    weather: "31 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "not great",
+                    phone_battery: "85%"
+                },
+                {
+                    href: "/images/TImelineImages/4Sat.1059am.jpg",
+                    alttext: "poop",
+                    time: "10:59 am",
+                    weather: "35 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "no good",
+                    phone_battery: "86%"
+                },
+                {
+                    href: "/images/TImelineImages/5Sat.1201pm.jpg",
+                    alttext: "poop",
+                    time: "12:01 pm",
+                    weather: "38 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "slightly better after a nap",
+                    phone_battery: "81%"
+                },
+                {
+                    href: "/images/TImelineImages/6Sat.100pm.jpg",
+                    alttext: "poop",
+                    time: "1:00 pm",
+                    weather: "40 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "tired but semi functional",
+                    phone_battery: "73%"
+                },
+                {
+                    href: "/images/TImelineImages/7Sat.204pm.jpg",
+                    alttext: "poop",
+                    time: "2:04 pm",
+                    weather: "42 degrees, sunny",
+                    location: "Home, Kitchen",
+                    state_of_being: "blech",
+                    phone_battery: "64%"
+                },
+                {
+                    href: "/images/TImelineImages/8Sat300pm.jpg",
+                    alttext: "poop",
+                    time: "3:00 pm",
+                    weather: "41 degrees, sunny",
+                    location: "Home, Living Room",
+                    state_of_being: "my head is floating away",
+                    phone_battery: "56%"
+                },
+                {
+                    href: "/images/TImelineImages/9Sat.403pm.jpg",
+                    alttext: "poop",
+                    time: "4:03 pm",
+                    weather: "41 degrees, sunny",
+                    location: "Home, Living Room",
+                    state_of_being: "fairly decent with a floating head",
+                    phone_battery: "49%"
+                },
+                {
+                    href: "/images/TImelineImages/10Sat.502pm.jpg",
+                    alttext: "poop",
+                    time: "5:02 pm",
+                    weather: "39 degrees, sun setting",
+                    location: "Home, Living Room",
+                    state_of_being: "not the best but alright",
+                    phone_battery: "46%"
+                },
+                {
+                    href: "/images/TImelineImages/11Sat.601pm.jpg",
+                    alttext: "poop",
+                    time: "6:01 pm",
+                    weather: "35 degrees, dark",
+                    location: "Home, Living Room",
+                    state_of_being: "fairly decent",
+                    phone_battery: "41%"
+                },
+                {
+                    href: "/images/TImelineImages/12Sat.702pm.jpg",
+                    alttext: "poop",
+                    time: "7:02 pm",
+                    weather: "31 degrees, dark",
+                    location: "Home, Living Room",
+                    state_of_being: "ok",
+                    phone_battery: "39%"
+                },
+                {
+                    href: "/images/TImelineImages/13Sat.801pm.jpg",
+                    alttext: "poop",
+                    time: "8:01 pm",
+                    weather: "30 degrees, dark",
+                    location: "Home, Living Room",
+                    state_of_being: "fairly decent",
+                    phone_battery: "35%"
+                }
+            ]
+        }
+
+        var sunday = {
+            title: "<h1><strong>Sunday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1Sun.801am.jpg",
+                    alttext: "poop",
+                    time: "8:01 am",
+                    weather: "19 degrees, idk",
+                    location: "Home, Bedroom",
+                    state_of_being: "decent",
+                    phone_battery: "98%"
+                },
+                {
+                    href: "/images/TImelineImages/2Sun.911am.jpg",
+                    alttext: "poop",
+                    time: "9:11 am",
+                    weather: "24 degrees, sunny",
+                    location: "Home, Kitchen",
+                    state_of_being: "pretty alright",
+                    phone_battery: "94%"
+                },
+                {
+                    href: "/images/TImelineImages/3Sun.1000am.jpg",
+                    alttext: "poop",
+                    time: "10:00 am",
+                    weather: "25 degrees, sunny",
+                    location: "Church",
+                    state_of_being: "pretty good",
+                    phone_battery: "92%"
+                },
+                {
+                    href: "/images/TImelineImages/4Sun.1101am.jpg",
+                    alttext: "poop",
+                    time: "11:01 am",
+                    weather: "30 degrees, sunny probably",
+                    location: "Church",
+                    state_of_being: "quite lovely besides a cough and slightly fuzzy head",
+                    phone_battery: "90%"
+                },
+                {
+                    href: "/images/TImelineImages/5Sun.1200pm.jpg",
+                    alttext: "poop",
+                    time: "12:00 pm",
+                    weather: "35 degrees, sunny",
+                    location: "Church",
+                    state_of_being: "generally good, a bit tired",
+                    phone_battery: "85%"
+                },
+                {
+                    href: "/images/TImelineImages/6Sun100pm.jpg",
+                    alttext: "poop",
+                    time: "1:00 pm",
+                    weather: "38 degrees, sunny",
+                    location: "Home, Living Room",
+                    state_of_being: "satisfied",
+                    phone_battery: "78%"
+                },
+                {
+                    href: "/images/TImelineImages/7Sun200pm.jpg",
+                    alttext: "poop",
+                    time: "2:00 pm",
+                    weather: "37 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "happy",
+                    phone_battery: "76%"
+                },
+                {
+                    href: "/images/TImelineImages/8Sun.301pm.jpg",
+                    alttext: "poop",
+                    time: "3:01 pm",
+                    weather: "37 degrees, sunny",
+                    location: "Home, Bedroom",
+                    state_of_being: "enjoying the sunshine",
+                    phone_battery: "73%"
+                },
+                {
+                    href: "/images/TImelineImages/9Sun.401pm.jpg",
+                    alttext: "poop",
+                    time: "4:01 pm",
+                    weather: "36 degrees, sunny",
+                    location: "Home, Kitchen",
+                    state_of_being: "happy and tired",
+                    phone_battery: "64%"
+                },
+                {
+                    href: "/images/TImelineImages/10Sun.500pm.jpg",
+                    alttext: "poop",
+                    time: "5:00 pm",
+                    weather: "36 degrees, setting",
+                    location: "Home, Kitchen",
+                    state_of_being: "pretty good",
+                    phone_battery: "48%"
+                },
+                {
+                    href: "/images/TImelineImages/11Sun.600pm.jpg",
+                    alttext: "poop",
+                    time: "6:00 pm",
+                    weather: "32 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "itchy throat and a nasty coughdrop",
+                    phone_battery: "32%"
+                },
+                {
+                    href: "/images/TImelineImages/12Sun.701pm.jpg",
+                    alttext: "poop",
+                    time: "7:01 pm",
+                    weather: "30 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "hungry",
+                    phone_battery: "20%"
+                },
+                {
+                    href: "/images/TImelineImages/13Sun.801pm.jpg",
+                    alttext: "poop",
+                    time: "8:01 pm",
+                    weather: "27 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "well fed and tired",
+                    phone_battery: "6%"
+                }
+            ]
+        }
+
+        var monday = {
+            title: "<h1><strong>Monday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1Mon.800am.jpg",
+                    alttext: "poop",
+                    time: "8:00 am",
+                    weather: "26 degrees, sunny",
+                    location: "West Campus Room 1056",
+                    state_of_being: "decent but mildly frustrated with self",
+                    phone_battery: "94%"
+                },
+                {
+                    href: "/images/TImelineImages/2Mon.900am.jpg",
+                    alttext: "poop",
+                    time: "9:00 am",
+                    weather: "28 degrees, no idea",
+                    location: "West Campus Room 1050D",
+                    state_of_being: "trying not to interrupt a critique",
+                    phone_battery: "93%"
+                },
+                {
+                    href: "/images/TImelineImages/3Mon.1001am.jpg",
+                    alttext: "poop",
+                    time: "10:01 am",
+                    weather: "34 degrees, no idea",
+                    location: "West Campus Room 1050",
+                    state_of_being: "sniffle",
+                    phone_battery: "92%"
+                },
+                {
+                    href: "/images/TImelineImages/4Mon.1101am.jpg",
+                    alttext: "poop",
+                    time: "11:01 am",
+                    weather: "38 degrees, sunny",
+                    location: "West Campus Intaglio Room",
+                    state_of_being: "pretty good overall",
+                    phone_battery: "89%"
+                },
+                {
+                    href: "/images/TImelineImages/5Mon.1224pm.jpg",
+                    alttext: "poop",
+                    time: "12:24 pm",
+                    weather: "42 degrees, sunny",
+                    location: "West Campus Litho Room",
+                    state_of_being: "excited/motivated",
+                    phone_battery: "86%"
+                },
+                {
+                    href: "/images/TImelineImages/6Mon.100pm.jpg",
+                    alttext: "poop",
+                    time: "1:00 pm",
+                    weather: "43 degrees, sunny",
+                    location: "West Campus, Intaglio Room",
+                    state_of_being: "I'm fading, my head is spinning, small headache",
+                    phone_battery: "85%"
+                },
+                {
+                    href: "/images/TImelineImages/7Mon.201pm.jpg",
+                    alttext: "poop",
+                    time: "2:01 pm",
+                    weather: "45 degrees, sunny",
+                    location: "MOA Education Desk",
+                    state_of_being: "excited",
+                    phone_battery: "75%"
+                },
+                {
+                    href: "/images/TImelineImages/8Mon.301pm.jpg",
+                    alttext: "poop",
+                    time: "3:01 pm",
+                    weather: "44 degrees, sunny",
+                    location: "MOA 4th Floor Hallway",
+                    state_of_being: "a bit lightheaded",
+                    phone_battery: "73%"
+                },
+                {
+                    href: "/images/TImelineImages/9Mon.400pm.jpg",
+                    alttext: "poop",
+                    time: "4:00 pm",
+                    weather: "43 degrees, sunny",
+                    location: "West Campus Main Hallway",
+                    state_of_being: "coughing my lungs out",
+                    phone_battery: "68%"
+                },
+                {
+                    href: "/images/TImelineImages/10Mon.529pm.jpg",
+                    alttext: "poop",
+                    time: "5:29 pm",
+                    weather: "40 degrees, dark",
+                    location: "Across the Street from West Campus",
+                    state_of_being: "^accurate representation of how my head feels",
+                    phone_battery: "50%"
+                },
+                {
+                    href: "/images/TImelineImages/11Mon.600pm.jpg",
+                    alttext: "poop",
+                    time: "6:00 pm",
+                    weather: "38 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "tired",
+                    phone_battery: "45%"
+                },
+                {
+                    href: "/images/TImelineImages/12Mon.700pm.jpg",
+                    alttext: "poop",
+                    time: "7:00 pm",
+                    weather: "38 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "ok",
+                    phone_battery: "38%"
+                },
+                {
+                    href: "/images/TImelineImages/13Mon.802pm.jpg",
+                    alttext: "poop",
+                    time: "8:02 pm",
+                    weather: "34 degrees, dark",
+                    location: "Home, Living Room",
+                    state_of_being: "72%",
+                    phone_battery: "32%"
+                }
+            ]
+        }
+
+        var tuesday = {
+            title: "<h1><strong>Tuesday</strong></h1>",
+            data: [
+                {
+                    href: "/images/TImelineImages/1Tue.800am.jpg",
+                    alttext: "poop",
+                    time: "8:00 am",
+                    weather: "28 degrees, sunny I think",
+                    location: "JKB 3113",
+                    state_of_being: "pretty good",
+                    phone_battery: "92%"
+                },
+                {
+                    href: "/images/TImelineImages/2Tue.901am.jpg",
+                    alttext: "poop",
+                    time: "9:01 am",
+                    weather: "29 degrees, can't see nothin, no windows",
+                    location: "JKB 3113",
+                    state_of_being: "a bit frustrated",
+                    phone_battery: "87%"
+                },
+                {
+                    href: "/images/TImelineImages/3Tue.1006am.jpg",
+                    alttext: "poop",
+                    time: "10:06 am",
+                    weather: "35 degrees, could be sunny, could be snowing, I wouldn't know",
+                    location: "JKB 3113",
+                    state_of_being: "aaaaaaaaaaahhhhhhhhh",
+                    phone_battery: "84%"
+                },
+                {
+                    href: "/images/TImelineImages/4Tue.1100am.jpg",
+                    alttext: "poop",
+                    time: "11:00 am",
+                    weather: "41 degrees, sunny",
+                    location: "MOA Grey Sofa Area",
+                    state_of_being: "tense and stressed",
+                    phone_battery: "76%"
+                },
+                {
+                    href: "/images/TImelineImages/5Tue.1200pm.jpg",
+                    alttext: "poop",
+                    time: "12:00 pm",
+                    weather: "43 degrees, sunny",
+                    location: "MOA Education Library",
+                    state_of_being: "frantic",
+                    phone_battery: "73%"
+                },
+                {
+                    href: "/images/TImelineImages/6Tue.100pm.jpg",
+                    alttext: "poop",
+                    time: "1:00 pm",
+                    weather: "45 degrees, sunny",
+                    location: "MOA Front Desk",
+                    state_of_being: "calming down slightly",
+                    phone_battery: "68%"
+                },
+                {
+                    href: "/images/TImelineImages/7Tue.200pm.jpg",
+                    alttext: "poop",
+                    time: "2:00 pm",
+                    weather: "45 degrees, sunny",
+                    location: "MOA Front Desk",
+                    state_of_being: "alright",
+                    phone_battery: "62%"
+                },
+                {
+                    href: "/images/TImelineImages/8Tue..309.jpg",
+                    alttext: "poop",
+                    time: "3:09 pm",
+                    weather: "46 degrees, sunny",
+                    location: "MOA Leid Gallery",
+                    state_of_being: "enjoying beautiful music",
+                    phone_battery: "59%"
+                },
+                {
+                    href: "/images/TImelineImages/9Tue.402pm.jpg",
+                    alttext: "poop",
+                    time: "4:02 pm",
+                    weather: "47 degrees, probably still sunny",
+                    location: "MOA Elevator",
+                    state_of_being: "pretty good actually",
+                    phone_battery: "56%"
+                },
+                {
+                    href: "/images/TImelineImages/10Tue.500pm.jpg",
+                    alttext: "poop",
+                    time: "5:00 pm",
+                    weather: "44 degrees, sun setting",
+                    location: "Bus Outside the MOA",
+                    state_of_being: "relieved",
+                    phone_battery: "51%"
+                },
+                {
+                    href: "/images/TImelineImages/11Tue.600pm.jpg",
+                    alttext: "poop",
+                    time: "6:00 pm",
+                    weather: "41 degrees, dark",
+                    location: "Home, Kitchen",
+                    state_of_being: "happy",
+                    phone_battery: "45%"
+                },
+                {
+                    href: "/images/TImelineImages/13Tue.804pm.jpg",
+                    alttext: "poop",
+                    time: "8:04 pm",
+                    weather: "35 degrees, dark",
+                    location: "Home, Bedroom",
+                    state_of_being: "streeeeeessssed",
+                    phone_battery: "37%"
+                }
+            ]
+        }
+
+        function insertDay(day) {
+            var html = day.title;
+
+            day.data.forEach((image) => {
+                html += template(image)
+            });
+
+            document.getElementById("day-plunked").innerHTML = html
+            refreshFsLightbox();
+        }
+
+
+    </script>
+    <header>
+        <a href="/" title="home">
+            <img src="images\AbbyBlackArtLogo.svg" class="logo">
+            <div>Abby Black Art</div>
+        </a>
+
+    </header>
+    <div class="row">
+        <div class="col">
+            <div class="timeline">
+                <div class="container left" onclick="insertDay(wednesday)">
+                    <div class="content">
+                        <h2>Wednesday, November 27, 2024</h2>
+                    </div>
+                </div>
+                <div class="container right" onclick="insertDay(thursday)">
+                    <div class="content">
+                        <h2>Thursday, November 28, 2024</h2>
+                    </div>
+                </div>
+                <div class="container left" onclick="insertDay(friday)">
+                    <div class="content">
+                        <h2>Friday, November 29, 2024</h2>
+                    </div>
+                </div>
+                <div class="container right" onclick="insertDay(saturday)">
+                    <div class="content">
+                        <h2>Saturday, November 30, 2024</h2>
+                    </div>
+                </div>
+                <div class="container left" onclick="insertDay(sunday)">
+                    <div class="content">
+                        <h2>Sunday, December 1, 2024</h2>
+                    </div>
+                </div>
+                <div class="container right" onclick="insertDay(monday)">
+                    <div class="content">
+                        <h2>Monday, December 2, 2024</h2>
+                    </div>
+                </div>
+                <div class="container left" onclick="insertDay(tuesday)">
+                    <div class="content">
+                        <h2>Tuesday, December 3, 2024</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="day-plunked"></div>
+    </div>
+</body>
+
+</html>
