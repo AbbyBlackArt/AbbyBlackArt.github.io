@@ -255,6 +255,10 @@ body {
     border-color: transparent transparent transparent rgb(188, 214, 200);
 }
 
+.active .content {
+    background-color: rgb(189, 166, 210);
+}
+
 /* Add arrows to the right container (pointing left) */
 .right::before {
     content: " ";

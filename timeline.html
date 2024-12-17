@@ -876,6 +876,26 @@
                 }
             ]
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.container');
+
+            // Function to handle the click event
+            function setActiveClass(event) {
+                // Remove 'active' class from all containers
+                containers.forEach(container => {
+                    container.classList.remove('active');
+                });
+
+                // Add 'active' class to the clicked container
+                event.currentTarget.classList.add('active');
+            }
+
+            // Add click event listeners to all containers
+            containers.forEach(container => {
+                console.log(container;)
+            container.addEventListener('click', setActiveClass);
+        });
+        });
 
         function insertDay(day) {
             var html = day.title;
