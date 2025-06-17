@@ -1,11 +1,15 @@
-<a href="/" title="home">
-    <img src="/img/AbbyBlackArtLogo.svg" class="logo" />
-    <div>Abby Black Art</div>
-</a>
-<nav>
-    <ul>
-        {{ $currentPage := . }} {{ with site.Params.menu }} {{ range . }}
-        <li><a href="{{ .url }}">{{ .name }}</a></li>
-        {{ end }} {{ end }}
-    </ul>
-</nav>
+<header class="font-bold py-4 flex justify-between">
+    <a href="/" title="home" class="align-content-center flex flex-row g-4">
+        <img src="/img/AbbyBlackArtLogo.svg" class="max-h-full" />
+        <h1>Abby Black Art</h1>
+    </a>
+    <nav>
+        <ul class="flex list-none p-4">
+            {{ $currentPage := . }} {{ with site.Params.menu }} {{ range . }}
+            <li class="m-4">
+                <a href="{{ .url }}" {{ if eq $.RelPermalink .url }} class="font-bold" {{ end }}>{{ .name }}</a>
+            </li>
+            {{ end }} {{ end }}
+        </ul>
+    </nav>
+</header>

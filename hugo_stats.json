@@ -24,8 +24,18 @@
       "ul"
     ],
     "classes": [
+      "align-content-center",
+      "flex",
+      "flex-row",
+      "font-bold",
+      "g-4",
       "grid-container",
-      "logo"
+      "justify-between",
+      "list-none",
+      "m-4",
+      "max-h-full",
+      "p-4",
+      "py-4"
     ],
     "ids": null
   }
