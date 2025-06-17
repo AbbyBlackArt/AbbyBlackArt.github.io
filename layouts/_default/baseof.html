@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{ partial "head.html" . }}
+    </head>
+
+    <body class="min-h-screen flex flex-col">
+        {{ partial "header.html" . }}
+        <main class="container mx-auto px-4 pb-4 min-h-full flex-grow">{{ block "main" . }}{{ end }}</main>
+        <footer class="py-4">
+            <div class="mx-auto text-center text-xs">
+                <p>&copy; {{ now.Format "2006" }} Abby Black. All rights reserved.</p>
+            </div>
+        </footer>
+    </body>
+</html>
