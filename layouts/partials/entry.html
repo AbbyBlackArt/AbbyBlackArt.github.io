@@ -1,0 +1,14 @@
+<div class="group relative">
+    {{ with .Params.image }}
+    <img class="w-full h-auto" src="{{ . }}" alt="" />
+    {{ end }}
+    <div
+        class="absolute bottom-6 text-white bg-accent bg-opacity-75 w-full text-center flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+    >
+        <p>
+            <i>{{ .Title }}</i>
+            <br />
+            {{ .Summary }}
+        </p>
+    </div>
+</div>
