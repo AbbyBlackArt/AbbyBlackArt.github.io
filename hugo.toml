@@ -16,3 +16,8 @@ url = "/3d"
 [[params.menu]]
 name = "About/CV"
 url = "/about"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
