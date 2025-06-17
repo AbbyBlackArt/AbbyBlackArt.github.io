@@ -3,4 +3,9 @@ title = 'Home'
 draft = false
 +++
 
-![Thursday, February 2nd, 2023 - 3:21 pm](/images/Thursday,February2nd,2023.321pm.jpg "Thursday") _Thursday, February 2nd, 2023 - 3:21 pm_, Pen on Paper, 2023
+  <div class="flex flex-wrap justify-center">
+    <figure class="justify-self-center">
+      <img loading="lazy" src="/images/Thursday,February2nd,2023.321pm.jpg" />
+      <figcaption class="text-center"><i>Thursday, February 2nd, 2023 - 3:21 pm</i>, Pen on Paper, 2023</figcaption>
+    </figure>
+  </div>
