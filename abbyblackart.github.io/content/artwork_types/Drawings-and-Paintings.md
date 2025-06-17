@@ -1,4 +1,0 @@
----
-title: Drawings and Paintings
----
-

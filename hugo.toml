@@ -1,0 +1,18 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Abby Black Art'
+
+
+[params]
+
+[[params.menu]]
+name = "2D"
+url =  "/2d"
+
+[[params.menu]]
+name = "3D"
+url = "/3d"
+
+[[params.menu]]
+name = "About/CV"
+url = "/about"
