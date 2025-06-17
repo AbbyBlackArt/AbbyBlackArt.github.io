@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --accent: rgba(93, 67, 51, 0.8);
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-accent: var(--accent);
+    --font-sans: var(--font-geist-sans);
+    --font-serif: var(--font-eb-garamond);
+    --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+        --accent: rgba(93, 67, 51, 0.8);
+    }
+}
+
+@layer base {
+    body {
+        background: var(--background);
+        color: var(--foreground);
+        font-family: "EB Garamond", EB_Garamond, "Times New Roman", Times, serif;
+    }
+
+    main a {
+        color: var(--accent);
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
+
+    p {
+        margin: 1rem 0;
+    }
+}
