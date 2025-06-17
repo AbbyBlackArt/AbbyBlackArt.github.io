@@ -2,9 +2,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{{ if .IsHome }} {{ site.Title }} {{ else }} {{ printf "%s | %s" .Title site.Title }} {{ end }}</title>
 
-{{ $style := resources.Get "css/styles.css" | resources.Minify | resources.Fingerprint }}
-<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}" />
-
+{{ $style := resources.Get "css/styles.css" }}
+{{ $minified := $style | resources.Minify }}
+{{ $fingerprinted := $minified | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $fingerprinted.RelPermalink }}" integrity="{{ $fingerprinted.Data.Integrity }}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet" />
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EYHRQ8XWK"></script>
 <script>
@@ -24,6 +28,6 @@
     import "https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js";
 
     const lightbox = GLightbox({
-      selector: ".glightbox",
+        selector: ".glightbox",
     });
 </script>
