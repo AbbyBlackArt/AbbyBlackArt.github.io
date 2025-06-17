@@ -1,8 +1,4 @@
 {{ define "main" }}
-<main>
-    <h1 class="text-center text-3xl font-bold">{{ .Title }}</h1>
-    <ul>
-        {{ range $index, $page := .Pages }} {{ partial "entry.html" $page }} {{ end }}
-    </ul>
-</main>
+<h1 class="text-center text-3xl font-bold">{{ .Title }}</h1>
+<div class="flex flex-col lg:flex-2/5">{{ range $index, $page := .Pages }} {{ partial "entry.html" $page }} {{ end }}</div>
 {{ end }}
