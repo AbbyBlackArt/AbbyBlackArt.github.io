@@ -3,7 +3,7 @@ title = 'About'
 draft = false
 +++
 
-{{< columns right="![Abigail Black](/images/AbbyBlackPhoto.jpg)" >}}
+{{< columns right="![Abigail Black](/images/AbbyBlackPhoto.jpg 'Abby in Europe')" >}}
 
 Born in Vermont and raised in Arkansas, I am currently pursuing a BA in art and a teaching license from Brigham Young University in Utah.
 

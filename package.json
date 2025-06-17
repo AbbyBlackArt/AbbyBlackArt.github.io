@@ -26,6 +26,7 @@
         "tailwindcss": "^4.1.10"
     },
     "dependencies": {
-        "@tailwindcss/postcss": "^4.1.10"
+        "@tailwindcss/postcss": "^4.1.10",
+        "glightbox": "^3.3.1"
     }
 }

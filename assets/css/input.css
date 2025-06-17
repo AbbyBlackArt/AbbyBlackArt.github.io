@@ -33,7 +33,7 @@
     main a {
         color: var(--accent);
         text-decoration-line: underline;
-        cursor: auto;
+        cursor: pointer;
     }
 
     p {
