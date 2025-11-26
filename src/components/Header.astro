@@ -2,12 +2,22 @@
 import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
 import { SITE } from "@consts";
----
 
+type Props = {
+  navLinks: {
+    label: string;
+    href: string;
+  }[];
+};
+
+const { navLinks } = Astro.props;
+---
+<!-- Make Main logo push nav links to the right -->
+ 
 <header>
   <Container>
-    <div class="flex flex-wrap gap-y-2 justify-between items-center">
-      <div class="flex-grow min-w-0">
+    <div class="flex flex-wrap gap-y-2 items-center">
+      <div class="flex-1 min-w-0">
         <Link href="/" underline={false} class="flex flex-row items-center gap-4">
             <svg class="max-h-12 max-w-12 flex-shrink-0" viewBox="0 0 379.11 543.84" xmlns="http://www.w3.org/2000/svg" aria-label="Abby Black Art Logo">
               <path fill="currentColor" d="M228,513.84l-13-2-48-441-23-1-55,314h-12l-1,15h42v-14l-12-1,19-109,50,1,19,238-22,3,1,16,59-1-4-18ZM129,249.84l24-153,5,1,15,153-44-1Z"/>
@@ -31,16 +41,12 @@ import { SITE } from "@consts";
             </div>
         </Link>
       </div>
-      <nav class="flex gap-2">
-        <Link href="/2d">
-          2D
-        </Link>
-        <Link href="/3d">
-          3D
-        </Link>
-        <Link href="/about">
-          About
-        </Link>
+      <nav class="flex gap-2 font-sans">
+        {navLinks.map((link) => (
+          <Link href={link.href}>
+            {link.label}
+          </Link>
+        ))}
       </nav>
     </div>
   </Container>

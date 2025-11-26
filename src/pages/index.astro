@@ -3,32 +3,45 @@ import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import {HOME } from "@consts";
 import { getImage } from "astro:assets";
+import { NAV_LINKS } from "@consts";
 
-const images = await getCollection("images");
-// Get three different images for the three links
-const defaultImage = images[0] || images[Math.floor(Math.random() * images.length)];
-const image2025 = images[1] || images[Math.floor(Math.random() * images.length)];
-const imagePreviousWork = images[2] || images[Math.floor(Math.random() * images.length)];
-const imageExhibitions = images[3] || images[Math.floor(Math.random() * images.length)];
+const works = await getCollection("works");
+
+// Helper function to get primary image from a work (first image or lowest order)
+function getPrimaryImage(work: typeof works[0]) {
+  if (!work.data.images || work.data.images.length === 0) return null;
+  const sortedImages = [...work.data.images].sort((a, b) => {
+    const orderA = a.order ?? Infinity;
+    const orderB = b.order ?? Infinity;
+    return orderA - orderB;
+  });
+  return sortedImages[0].file;
+}
+
+// Get three different works for the three links
+const defaultWork = works[0] || works[Math.floor(Math.random() * works.length)];
+const work2025 = works[1] || works[Math.floor(Math.random() * works.length)];
+const workPreviousWork = works[2] || works[Math.floor(Math.random() * works.length)];
+const workExhibitions = works[3] || works[Math.floor(Math.random() * works.length)];
 
 // Get optimized image URLs for CSS background
-const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.data.image })).src : '';
-const image2025Url = image2025 ? (await getImage({ src: image2025.data.image })).src : '';
-const imagePreviousWorkUrl = imagePreviousWork ? (await getImage({ src: imagePreviousWork.data.image })).src : '';
-const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhibitions.data.image })).src : '';
+const defaultImageUrl = defaultWork ? (await getImage({ src: getPrimaryImage(defaultWork)! })).src : '';
+const image2025Url = work2025 ? (await getImage({ src: getPrimaryImage(work2025)! })).src : '';
+const imagePreviousWorkUrl = workPreviousWork ? (await getImage({ src: getPrimaryImage(workPreviousWork)! })).src : '';
+const imageExhibitionsUrl = workExhibitions ? (await getImage({ src: getPrimaryImage(workExhibitions)! })).src : '';
 
 ---
 
-<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} navLinks={[]}>
   <div class="home-background-wrapper">
     <div class="home-background home-bg-default" style={`background-image: url('${defaultImageUrl}');`}></div>
     <div class="home-background home-bg-2025" style={`background-image: url('${image2025Url}');`}></div>
     <div class="home-background home-bg-previous" style={`background-image: url('${imagePreviousWorkUrl}');`}></div>
     <div class="home-background home-bg-exhibitions" style={`background-image: url('${imageExhibitionsUrl}');`}></div>
     <nav class="home-nav">
-      <a href="/2025" class="nav-link nav-link-2025">2025</a>
-      <a href="/previous-work" class="nav-link nav-link-previous">Previous Work</a>
-      <a href="/exhibitions" class="nav-link nav-link-exhibitions">Exhibitions</a>
+      {NAV_LINKS.map((link) => (
+        <a href={link.href} class="nav-link nav-link-${link.label}">{link.label}</a>
+      ))}
     </nav>
   </div>
 
@@ -71,6 +84,8 @@ const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhib
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
       z-index: 1;
+      // zoom in on all backgrounds
+      transform: scale(1.2);
     }
 
     .home-bg-default {
@@ -92,7 +107,7 @@ const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhib
       padding: 0 2rem;
       z-index: 10;
       pointer-events: none;
-      border-radius: 9999px;
+      border-radius: 100px;
       flex-wrap: wrap;
       // width: fit-content;
       width: calc(100vw - 2rem);
@@ -100,7 +115,6 @@ const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhib
     }
 
     .nav-link {
-      @apply font-cursive;
       position: relative;
       pointer-events: auto;
       font-size: 1rem;

@@ -6,10 +6,9 @@ import Link from "@components/Link.astro";
 import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
-    const images = await getCollection("images");
+    const works = await getCollection("works");
 // years between now and 2020
     const allYears = Array.from({ length: new Date().getFullYear() - 2020 }, (_, i) => new Date().getFullYear() - i);
-    console.log(allYears);
     return allYears.map((year) => ({
         params: { slug: year.toString() },
         props: { year: year.toString() },
@@ -22,10 +21,22 @@ type Props = {
 
 const { year } = Astro.props;
 
-const images = (await getCollection("images")).filter((image) => {
-    if (!image.data.date) return false;
-    console.log(image.data.date.getFullYear().toString(), year);
-    return image.data.date.getFullYear().toString() === year;
+const allWorks = await getCollection("works");
+
+// Helper function to get primary image from a work
+function getPrimaryImage(work: typeof allWorks[0]) {
+  if (!work.data.images || work.data.images.length === 0) return null;
+  const sortedImages = [...work.data.images].sort((a, b) => {
+    const orderA = a.order ?? Infinity;
+    const orderB = b.order ?? Infinity;
+    return orderA - orderB;
+  });
+  return sortedImages[0].file;
+}
+
+const works = allWorks.filter((work) => {
+    if (!work.data.date) return false;
+    return work.data.date.getFullYear().toString() === year;
 });
 
 const yearDisplayName = year.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
@@ -39,18 +50,23 @@ const yearDisplayName = year.split("-").map((word) => word.charAt(0).toUpperCase
         <h1 class="animate text-2xl font-semibold text-black dark:text-white my-10">
             {yearDisplayName}
         </h1>
-        {images.length === 0 ? (
-            <p class="animate">No images found in this year.</p>
+        {works.length === 0 ? (
+            <p class="animate">No works found in this year.</p>
         ) : (
             <div class="flex flex-wrap justify-center gap-4 align-items-center">
-                {images.map((image) => (
-                    <div class="flex justify-center flex-row md:w-2/5">
-                        <figure>
-                            <Image src={image.data.image} alt={image.data.title} class="max-w-xl w-full h-auto aspect-[4/3] object-cover" />
-                            <figcaption class="text-center">{image.data.title}</figcaption>
-                        </figure>
-                    </div>
-                ))}
+                {works.map((work) => {
+                    const primaryImage = getPrimaryImage(work);
+                    return primaryImage ? (
+                        <div class="flex justify-center flex-row md:w-2/5">
+                            <Link href={`/works/${work.slug}`} underline={false}>
+                                <figure>
+                                    <Image src={primaryImage} alt={work.data.title} class="max-w-xl w-full h-auto aspect-[4/3] object-cover" />
+                                    <figcaption class="text-center">{work.data.title}</figcaption>
+                                </figure>
+                            </Link>
+                        </div>
+                    ) : null;
+                })}
             </div>
         )}
     </Container>

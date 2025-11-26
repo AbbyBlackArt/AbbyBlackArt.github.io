@@ -17,7 +17,7 @@ body {
 }
 
 body {
-    @apply font-serif antialiased;
+    @apply font-cursive antialiased;
     @apply flex flex-col;
     @apply bg-white dark:bg-stone-900;
     @apply text-black/50 dark:text-white/75;

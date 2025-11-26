@@ -6,13 +6,13 @@ import { Image } from "astro:assets";
 import Link from "@components/Link.astro";
 
 export async function getStaticPaths() {
-  const images = await getCollection("images");
+  const works = await getCollection("works");
   
-  // Get all unique categories from all images
+  // Get all unique categories from all works
   const allCategories = new Set<string>();
-  images.forEach((image) => {
-    if (image.data.categories) {
-      image.data.categories.forEach((category) => {
+  works.forEach((work) => {
+    if (work.data.categories) {
+      work.data.categories.forEach((category) => {
         allCategories.add(category);
       });
     }
@@ -31,10 +31,23 @@ type Props = {
 
 const { category } = Astro.props;
 
-// Get all images that have this category
-const images = (await getCollection("images")).filter((image) => {
-  if (!image.data.categories) return false;
-  return image.data.categories.some(
+const allWorks = await getCollection("works");
+
+// Helper function to get primary image from a work
+function getPrimaryImage(work: typeof allWorks[0]) {
+  if (!work.data.images || work.data.images.length === 0) return null;
+  const sortedImages = [...work.data.images].sort((a, b) => {
+    const orderA = a.order ?? Infinity;
+    const orderB = b.order ?? Infinity;
+    return orderA - orderB;
+  });
+  return sortedImages[0].file;
+}
+
+// Get all works that have this category
+const works = allWorks.filter((work) => {
+  if (!work.data.categories) return false;
+  return work.data.categories.some(
     (cat) => cat.toLowerCase().replace(/\s+/g, "-") === category.toLowerCase().replace(/\s+/g, "-")
   );
 });
@@ -54,25 +67,30 @@ const categoryDisplayName = category
     <h1 class="animate text-2xl font-semibold text-black dark:text-white my-10">
       {categoryDisplayName}
     </h1>
-    {images.length === 0 ? (
-      <p class="animate">No images found in this category.</p>
+    {works.length === 0 ? (
+      <p class="animate">No works found in this category.</p>
     ) : (
       <div class="flex flex-wrap justify-center gap-4 align-items-center">
-        {images.map((image) => (
-          <div class="flex justify-center flex-row md:w-2/5">
-            <figure>
-              <Image
-                src={image.data.image}
-                alt={image.data.title}
-                class="max-w-xl w-full h-auto aspect-[4/3] object-cover"
-              />
-              <figcaption class="text-center">
-                <i>{image.data.title}</i>
-                {image.data.summary && `, ${image.data.summary}`}
-              </figcaption>
-            </figure>
-          </div>
-        ))}
+        {works.map((work) => {
+          const primaryImage = getPrimaryImage(work);
+          return primaryImage ? (
+            <div class="flex justify-center flex-row md:w-2/5">
+              <Link href={`/works/${work.slug}`} underline={false}>
+                <figure>
+                  <Image
+                    src={primaryImage}
+                    alt={work.data.title}
+                    class="max-w-xl w-full h-auto aspect-[4/3] object-cover"
+                  />
+                  <figcaption class="text-center">
+                    <i>{work.data.title}</i>
+                    {work.data.summary && `, ${work.data.summary}`}
+                  </figcaption>
+                </figure>
+              </Link>
+            </div>
+          ) : null;
+        })}
       </div>
     )}
   </Container>
