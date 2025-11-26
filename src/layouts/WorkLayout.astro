@@ -1,22 +1,23 @@
 ---
 import Head from "@components/Head.astro";
 import { type CollectionEntry } from "astro:content";
-import { SITE } from "@consts";
 
 type Props = {
     work: CollectionEntry<"works">;
 };
 
 const { work } = Astro.props;
+
+
 ---
 
 <!doctype html>
 <html lang="en" class="overflow-hidden">
     <head>
-        <Head title={`${work.data.title} | ${SITE.NAME}`} description={work.data.summary || work.data.title} />
+        <Head title={work.data.title} description={work.data.summary || work.data.title} />
     </head>
-    <body class="min-h-screen w-screen font-serif">
-        <main class="h-full w-full m-0 py-20 animate">
+    <body class="h-screen w-screen font-serif">
+        <main class="h-full w-full m-0 pt-10 md:pt-20 pb-0">
             <slot />
         </main>
     </body>

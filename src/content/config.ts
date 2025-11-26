@@ -31,13 +31,18 @@ const works = defineCollection({
 
 const exhibitions = defineCollection({
     type: "content",
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         description: z.string(),
         location: z.string(),
         startDate: z.coerce.date(),
         endDate: z.coerce.date().optional(),
         draft: z.boolean().optional(),
+        images: z.array(z.object({
+            file: image(),
+            title: z.string().optional(),
+            description: z.string().optional(),
+        })).optional(),
     }),
 });
 

@@ -4,31 +4,34 @@ import PageLayout from "@layouts/PageLayout.astro";
 import {HOME } from "@consts";
 import { getImage } from "astro:assets";
 import { NAV_LINKS } from "@consts";
+import AbbyBlackPhoto from "../assets/AbbyBlackPhoto.jpg";
 
 const images = await getCollection("works");
 // Get three different images for the three links
 const defaultImage = images[0].data.images[0] || images[Math.floor(Math.random() * images.length)];
-// const image2025 = images[1] || images[Math.floor(Math.random() * images.length)];
-// const imagePreviousWork = images[2] || images[Math.floor(Math.random() * images.length)];
-// const imageExhibitions = images[3] || images[Math.floor(Math.random() * images.length)];
-
+const image2025 = (images.find(image => image.data.date && image.data.date.getFullYear() === 2025) || images[Math.floor(Math.random() * images.length)]).data.images[0];
+const imagePreviousWork = (images.find(image => image.data.date && image.data.date.getFullYear() < 2025) || images[Math.floor(Math.random() * images.length)]).data.images[0];
+const imageAbout = AbbyBlackPhoto;
+const exhibitions = await getCollection("exhibitions");
+const imageExhibitions = exhibitions[0]?.data.images?.[0] || exhibitions[Math.floor(Math.random() * exhibitions.length)]?.data.images?.[0];
 // Get optimized image URLs for CSS background
 const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.file })).src : '';
-// const image2025Url = image2025 ? (await getImage({ src: image2025.data.image })).src : '';
-// const imagePreviousWorkUrl = imagePreviousWork ? (await getImage({ src: imagePreviousWork.data.image })).src : '';
-// const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhibitions.data.image })).src : '';
-
+const image2025Url = image2025 ? (await getImage({ src: image2025.file })).src : '';
+const imagePreviousWorkUrl = imagePreviousWork ? (await getImage({ src: imagePreviousWork.file })).src : '';
+const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhibitions.file })).src : '';
+const imageAboutUrl = imageAbout ? (await getImage({ src: imageAbout })).src : '';
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} navLinks={[]}>
   <div class="home-background-wrapper">
     <div class="home-background home-bg-default" style={`background-image: url('${defaultImageUrl}');`}></div>
-    <!-- <div class="home-background home-bg-2025" style={`background-image: url('${image2025Url}');`}></div> -->
-    <!-- <div class="home-background home-bg-previous" style={`background-image: url('${imagePreviousWorkUrl}');`}></div> -->
-    <!-- <div class="home-background home-bg-exhibitions" style={`background-image: url('${imageExhibitionsUrl}');`}></div> -->
+    <div class="home-background home-bg-2025" style={`background-image: url('${image2025Url}');`}></div>
+    <div class="home-background home-bg-previous" style={`background-image: url('${imagePreviousWorkUrl}');`}></div>
+    <div class="home-background home-bg-exhibitions" style={`background-image: url('${imageExhibitionsUrl}');`}></div>
+    <div class="home-background home-bg-about" style={`background-image: url('${imageAboutUrl}');`}></div>
     <nav class="home-nav">
       {NAV_LINKS.map((link) => (
-        <a href={link.href} class="nav-link nav-link-${link.label}">{link.label}</a>
+        <a href={link.href} class={`nav-link nav-link-${link.label.toLowerCase().replace(/ /g, '-')}`}>{link.label}</a>
       ))}
     </nav>
   </div>
@@ -121,7 +124,8 @@ const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.file 
     /* Change background on hover using :has() selector */
     .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-default,
     .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-previous,
-    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-exhibitions {
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-exhibitions,
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-about {
       opacity: 0;
     }
 
@@ -131,7 +135,8 @@ const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.file 
 
     .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-default,
     .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-2025,
-    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-exhibitions {
+    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-exhibitions,
+    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-about {
       opacity: 0;
     }
 
@@ -141,11 +146,23 @@ const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.file 
 
     .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-default,
     .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-2025,
-    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-previous {
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-previous,
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-about {
       opacity: 0;
     }
 
     .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-exhibitions {
+      opacity: 1;
+    }
+
+    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-default,
+    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-2025,
+    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-previous,
+    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-exhibitions {
+      opacity: 0;
+    }
+
+    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-about {
       opacity: 1;
     }
   </style>

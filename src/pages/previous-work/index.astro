@@ -1,9 +1,10 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import { PREVIOUS_WORK } from "@consts";
 import Gallery from "@components/Gallery.astro";
+import type { CollectionEntry } from "astro:content";
 
 const data = (await getCollection("works"))
     .filter(work => !work.data.draft)
@@ -40,9 +41,14 @@ const years = Object.keys(works).sort((a, b) => parseInt(b) - parseInt(a));
                             {year}
                         </div>
                     </section>
-                    <section class="animate">
-                        <Gallery works={works[year]} />
-                    </section>
+                    <Gallery works={works[year]?.map(work => ({
+                        slug: work.slug,
+                        title: work.data.title,
+                        summary: work.data.summary,
+                        images: work.data.images.map(image => ({
+                            file: image.file,
+                        })),
+                    })) ?? []} />
                 ))}
             </div>
         </div>

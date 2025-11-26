@@ -39,9 +39,16 @@ const yearDisplayName = year.split("-").map((word) => word.charAt(0).toUpperCase
         {works.length === 0 ? (
             <p class="animate">No works found in this year.</p>
         ) : (
-            <section class="animate">
-                <Gallery works={works} />
-            </section>
+            <div class="flex flex-wrap justify-center gap-4 align-items-center">
+                <Gallery works={works?.map(work => ({
+                    slug: work.slug,
+                    title: work.data.title,
+                    summary: work.data.summary,
+                    images: work.data.images.map(image => ({
+                        file: image.file,
+                    })),
+                })) ?? []}/>
+            </div>
         )}
     </Container>
 </PageLayout>
