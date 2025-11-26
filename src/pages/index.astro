@@ -1,0 +1,150 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import {HOME } from "@consts";
+import { getImage } from "astro:assets";
+
+const images = await getCollection("images");
+// Get three different images for the three links
+const defaultImage = images[0] || images[Math.floor(Math.random() * images.length)];
+const image2025 = images[1] || images[Math.floor(Math.random() * images.length)];
+const imagePreviousWork = images[2] || images[Math.floor(Math.random() * images.length)];
+const imageExhibitions = images[3] || images[Math.floor(Math.random() * images.length)];
+
+// Get optimized image URLs for CSS background
+const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.data.image })).src : '';
+const image2025Url = image2025 ? (await getImage({ src: image2025.data.image })).src : '';
+const imagePreviousWorkUrl = imagePreviousWork ? (await getImage({ src: imagePreviousWork.data.image })).src : '';
+const imageExhibitionsUrl = imageExhibitions ? (await getImage({ src: imageExhibitions.data.image })).src : '';
+
+---
+
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <div class="home-background-wrapper">
+    <div class="home-background home-bg-default" style={`background-image: url('${defaultImageUrl}');`}></div>
+    <div class="home-background home-bg-2025" style={`background-image: url('${image2025Url}');`}></div>
+    <div class="home-background home-bg-previous" style={`background-image: url('${imagePreviousWorkUrl}');`}></div>
+    <div class="home-background home-bg-exhibitions" style={`background-image: url('${imageExhibitionsUrl}');`}></div>
+    <nav class="home-nav">
+      <a href="/2025" class="nav-link nav-link-2025">2025</a>
+      <a href="/previous-work" class="nav-link nav-link-previous">Previous Work</a>
+      <a href="/exhibitions" class="nav-link nav-link-exhibitions">Exhibitions</a>
+    </nav>
+  </div>
+
+  <style lang="scss">
+    @use "../styles/global.scss";
+    .home-background-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 0;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 2;
+        pointer-events: none;
+      }
+      
+      html.dark &::after {
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .home-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 1;
+    }
+
+    .home-bg-default {
+      opacity: 1;
+    }
+
+    .home-nav {
+      @extend header;
+      right: unset;
+      left: unset;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2rem;
+      z-index: 10;
+      pointer-events: none;
+      border-radius: 9999px;
+      flex-wrap: wrap;
+      // width: fit-content;
+      width: calc(100vw - 2rem);
+      max-width: calc(100vw - 2rem);
+    }
+
+    .nav-link {
+      @apply font-cursive;
+      position: relative;
+      pointer-events: auto;
+      font-size: 1rem;
+      text-decoration: none;
+      padding: 3rem 4rem;
+      transition: transform 0.3s ease, text-shadow 0.3s ease;
+      cursor: pointer;
+      text-wrap: nowrap;
+    }
+
+    .nav-link:hover {
+      transform: scale(1.1);
+      /* text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); */
+    }
+
+    /* Change background on hover using :has() selector */
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-default,
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-previous,
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-exhibitions {
+      opacity: 0;
+    }
+
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-2025 {
+      opacity: 1;
+    }
+
+    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-default,
+    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-2025,
+    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-exhibitions {
+      opacity: 0;
+    }
+
+    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-previous {
+      opacity: 1;
+    }
+
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-default,
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-2025,
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-previous {
+      opacity: 0;
+    }
+
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-exhibitions {
+      opacity: 1;
+    }
+  </style>
+</PageLayout>

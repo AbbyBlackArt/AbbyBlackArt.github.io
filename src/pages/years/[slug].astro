@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+    const images = await getCollection("images");
+// years between now and 2020
+    const allYears = Array.from({ length: new Date().getFullYear() - 2020 }, (_, i) => new Date().getFullYear() - i);
+    console.log(allYears);
+    return allYears.map((year) => ({
+        params: { slug: year.toString() },
+        props: { year: year.toString() },
+    }));
+}
+
+type Props = {
+    year: string;
+};
+
+const { year } = Astro.props;
+
+const images = (await getCollection("images")).filter((image) => {
+    if (!image.data.date) return false;
+    console.log(image.data.date.getFullYear().toString(), year);
+    return image.data.date.getFullYear().toString() === year;
+});
+
+const yearDisplayName = year.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+---
+
+<PageLayout title={yearDisplayName} description={`Images from ${yearDisplayName}`}>
+    <Container>
+        <div class="animate">
+            <Link href="/">← Back to home</Link>
+        </div>
+        <h1 class="animate text-2xl font-semibold text-black dark:text-white my-10">
+            {yearDisplayName}
+        </h1>
+        {images.length === 0 ? (
+            <p class="animate">No images found in this year.</p>
+        ) : (
+            <div class="flex flex-wrap justify-center gap-4 align-items-center">
+                {images.map((image) => (
+                    <div class="flex justify-center flex-row md:w-2/5">
+                        <figure>
+                            <Image src={image.data.image} alt={image.data.title} class="max-w-xl w-full h-auto aspect-[4/3] object-cover" />
+                            <figcaption class="text-center">{image.data.title}</figcaption>
+                        </figure>
+                    </div>
+                ))}
+            </div>
+        )}
+    </Container>
+</PageLayout>

@@ -1,0 +1,47 @@
+---
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { SITE } from "@consts";
+---
+
+<header>
+  <Container>
+    <div class="flex flex-wrap gap-y-2 justify-between items-center">
+      <div class="flex-grow min-w-0">
+        <Link href="/" underline={false} class="flex flex-row items-center gap-4">
+            <svg class="max-h-12 max-w-12 flex-shrink-0" viewBox="0 0 379.11 543.84" xmlns="http://www.w3.org/2000/svg" aria-label="Abby Black Art Logo">
+              <path fill="currentColor" d="M228,513.84l-13-2-48-441-23-1-55,314h-12l-1,15h42v-14l-12-1,19-109,50,1,19,238-22,3,1,16,59-1-4-18ZM129,249.84l24-153,5,1,15,153-44-1Z"/>
+              <path fill="currentColor" d="M73,543.84s6-348-10-463l-3-6s-18-41-3,7,13,460,13,460l3,2Z"/>
+              <path fill="currentColor" d="M71,542.84s-3-206-27-276S0,174.84,0,174.84c0,0,48,320,71,368Z"/>
+              <path fill="currentColor" d="M72.4,506.38s12.04-87.11,27.82-92.01,15.78-3.27,15.78-3.27c0,0-25.14,65.4-42.81,130.76l-.79-35.48Z"/>
+              <path fill="currentColor" d="M71.5,247.34s8-77,19-78,11-8,11-8c0,0-9.28,97.36-27.14,121.68-3.86,3.32-2.86-33.68-2.86-33.68"/>
+              <path fill="currentColor" d="M37,42.84S3,82.84,17,96.84s20-54,20-54Z"/>
+              <path fill="currentColor" d="M40.95,43.13s-15.16,50.26,3.27,57.49-3.27-57.49-3.27-57.49Z"/>
+              <path fill="currentColor" d="M44.45,42.28s39.02,35.12,27.01,50.86c-12.01,15.74-27.01-50.86-27.01-50.86Z"/>
+              <path fill="currentColor" d="M47.79,41.38s50.38,14.75,46.38,34.14c-4.01,19.39-46.38-34.14-46.38-34.14Z"/>
+              <path fill="currentColor" d="M114.62.64s15.09,17.76,8.88,23.97S114.62.64,114.62.64Z"/>
+              <path fill="currentColor" d="M112.87.77s6.73,22.31-1.45,25.52c-8.18,3.21,1.45-25.52,1.45-25.52Z"/>
+              <path fill="currentColor" d="M111.32.4s-17.32,15.59-11.99,22.58S111.32.4,111.32.4Z"/>
+              <path fill="currentColor" d="M109.83,0s-22.37,6.55-20.59,15.15S109.83,0,109.83,0Z"/>
+              <path fill="currentColor" d="M70.88,186.77s17.25-121.88,29.61-161.09l1.45-1.92s8.95-13.25.72,2.62c-8.23,15.87-30.55,159.86-30.55,159.86l-1.22.52Z"/>
+              <path fill="currentColor" d="M379,377.84c-2.18-60.61-33.64-88.7-68.43-101.12,28.66-13.97,52.19-39.16,50.33-84.39-4.61-111.64-151.06-85.94-151.06-85.94l5.53,187.14s.09,0,.22.01l5.42,210.29s163,13,158-126ZM339.92,189.98c1.89,51.46-31.71,71.53-61.8,79.22-23.87,6.1-45.54,4.42-45.54,4.42l-.13-5.08-3.94-149.59s108.02-21.24,111.41,71.03ZM238.65,482.57l-4.69-188.94-.03-1.21s15-3.13,34.76-2.51c37.32,1.16,91.64,15.68,94.21,89.83,3.93,113.43-124.26,102.82-124.26,102.82Z"/>
+            </svg>
+            <div class="font-semibold">
+              {SITE.NAME}
+            </div>
+        </Link>
+      </div>
+      <nav class="flex gap-2">
+        <Link href="/2d">
+          2D
+        </Link>
+        <Link href="/3d">
+          3D
+        </Link>
+        <Link href="/about">
+          About
+        </Link>
+      </nav>
+    </div>
+  </Container>
+</header>

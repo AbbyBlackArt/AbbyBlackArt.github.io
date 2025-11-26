@@ -1,0 +1,40 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { THREED } from "@consts";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const data = (await getCollection("3d"))
+  .filter(item => item.data.categories.includes("3D"))
+
+---
+
+
+<PageLayout title={THREED.TITLE} description={THREED.DESCRIPTION}>
+  <Container>
+    <div class="flex flex-wrap justify-center gap-4 align-items-center">
+        {data.map(item => (
+          <div class="flex justify-center flex-row md:w-2/5">
+            <Link 
+              href={`/3d/${item.slug}`}
+              underline={false}
+            >
+              {item.data.image ? (
+                <figure>
+                    <Image
+                        src={item.data.image}
+                        alt={item.data.title}
+                        class="max-w-xl w-full h-auto aspect-[4/3] object-cover"
+                      />
+                      <figcaption class="text-center">{item.data.title}</figcaption>
+                  </figure>
+              ) : (
+                <>{item.data.title}</>
+              )}
+            </Link>
+          </div>
+        ))}
+      </div>
+  </Container>
