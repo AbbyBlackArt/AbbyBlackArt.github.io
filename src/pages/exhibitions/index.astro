@@ -8,14 +8,14 @@ import ArrowCard from "@components/ArrowCard.astro";
 
 const data = (await getCollection("exhibitions"))
     .filter(exhibition => !exhibition.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+    .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
 
 type Acc = {
     [year: string]: CollectionEntry<"exhibitions">[];
 }
 
 const exhibitions = data.reduce((acc: Acc, exhibition) => {
-    const year = exhibition.data.date.getFullYear().toString();
+    const year = exhibition.data.startDate.getFullYear().toString();
     if (!acc[year]) {
         acc[year] = [];
     }

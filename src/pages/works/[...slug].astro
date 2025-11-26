@@ -1,10 +1,10 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import PageLayout from "@layouts/PageLayout.astro";
-import Container from "@components/Container.astro";
+import WorkLayout from "@layouts/WorkLayout.astro";
 import FormattedDate from "@components/FormattedDate.astro";
-import BackToPrev from "@components/BackToPrev.astro";
 import { Image } from "astro:assets";
+import Link from "@components/Link.astro";
+import { imageConfig } from "astro:assets";
 
 export async function getStaticPaths() {
   const works = (await getCollection("works"))
@@ -21,64 +21,179 @@ const work = Astro.props;
 
 // Sort images by order if provided, otherwise keep array order
 const sortedImages = [...work.data.images].sort((a, b) => {
-  const orderA = a.order ?? Infinity;
-  const orderB = b.order ?? Infinity;
+  const orderA = (a as any).order ?? Infinity;
+  const orderB = (b as any).order ?? Infinity;
   return orderA - orderB;
 });
 ---
 
-<PageLayout title={work.data.title} description={work.data.summary || work.data.title}>
-  <Container>
-    <div class="animate">
-      <BackToPrev href="/">
-        ← Back to home
-      </BackToPrev>
-    </div>
-    <div class="space-y-1 my-10">
-      {work.data.date && (
-        <div class="animate flex items-center gap-1.5">
-          <div class="font-base text-sm">
-            <FormattedDate date={work.data.date} />
-          </div>
-        </div>
-      )}
-      <div class="animate text-2xl font-semibold text-black dark:text-white">
-        {work.data.title}
-      </div>
-      {work.data.summary && (
-        <div class="animate text-black/60 dark:text-white/60">
-          {work.data.summary}
-        </div>
-      )}
-      {work.data.categories && work.data.categories.length > 0 && (
-        <div class="animate flex flex-wrap gap-2 mt-2">
-          {work.data.categories.map((category) => (
-            <span class="text-xs px-2 py-1 bg-black/10 dark:bg-white/10 rounded">
-              {category}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-    <div class="animate space-y-8">
-      {sortedImages.map((imageData, index) => (
-        <figure class="w-full">
-          <Image
-            src={imageData.file}
-            alt={imageData.title || work.data.title}
-            class="w-full h-auto"
-            loading={index === 0 ? "eager" : "lazy"}
-          />
-          {(imageData.title || imageData.description) && (
-            <figcaption class="text-center mt-2 text-sm text-black/60 dark:text-white/60">
-              {imageData.title && <i>{imageData.title}</i>}
-              {imageData.title && imageData.description && ", "}
-              {imageData.description && imageData.description}
-            </figcaption>
-          )}
-        </figure>
-      ))}
-    </div>
-  </Container>
-</PageLayout>
+<WorkLayout work={work}>
+    <!-- Back button - top left -->
+    <button
+      onclick="window.history.back()"
+      class="absolute top-4 left-4 z-50 p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+      aria-label="Back to home"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-6 h-6"
+      >
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 5 12 12 19"></polyline>
+      </svg>
+    </button>
 
+    <!-- Main content: description at start, images at end -->
+    <div class="flex flex-col md:flex-row h-full">
+      <!-- Description section - left on desktop, bottom on mobile -->
+      <div class="flex-shrink-0 md:w-1/3 lg:w-1/4 p-6 md:p-8 overflow-y-auto bg-white dark:bg-stone-900 border-r border-black/10 dark:border-white/10 order-2 md:order-1">
+        <div class="space-y-4">
+          {work.data.date && (
+            <div class="text-sm text-black/60 dark:text-white/60">
+              <FormattedDate date={work.data.date} />
+            </div>
+          )}
+          <h1 class="text-2xl md:text-3xl font-semibold text-black dark:text-white">
+            {work.data.title}
+          </h1>
+          {work.data.summary && (
+            <div class="text-black/70 dark:text-white/70 leading-relaxed">
+              {work.data.summary}
+            </div>
+          )}
+          {work.data.categories && work.data.categories.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {work.data.categories.map((category) => (
+                <span class="text-xs px-3 py-1 bg-black/10 dark:bg-white/10 rounded-full">
+                  {category}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Images section - right on desktop, top on mobile -->
+      <div class="flex-1 order-1 md:order-2 h-full overflow-hidden">
+        <div class="p-4 md:p-8 flex flex-col h-full">
+            <!-- Main image container - takes remaining space and shrinks image to fit -->
+            <div class="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
+                <Image
+                    src={work.data.images[0].file}
+                    alt={work.data.images[0].title || work.data.title}
+                    class="main-image max-w-full max-h-full w-auto h-auto object-contain"
+                    height={600}
+                    width={800}
+                    loading="eager"
+                />
+            </div>
+            <!-- Thumbnails - fixed height, always visible -->
+            <div class="thumbnails-container flex flex-row gap-4 h-20 flex-shrink-0 mt-4 overflow-x-auto">
+                {sortedImages.map((imageData, index) => (
+                    <button
+                        class={`h-full aspect-square flex-shrink-0 ${index == 0 ? 'active' : ''}`}
+                        data-image-index={index}
+                        aria-label={`View image ${imageData.title || work.data.title}`}
+                    >
+                        <Image src={imageData.file} alt={imageData.title || work.data.title} class="h-full w-full object-cover" loading="lazy" />
+                    </button>
+                ))}   
+            </div>
+        </div>
+      </div>
+    </div>
+</WorkLayout>
+
+<style>
+    .active {
+        border: 2px solid rgb(0, 0, 0, 0.5);
+        border-radius: 4px;
+        padding: 2px;
+        transition: border 0.3s ease-in-out;
+
+    }
+    html.dark .active {
+        border: 2px solid rgb(255, 255, 255, 0.5);
+    }
+</style>
+
+<script define:vars={{ images: JSON.stringify(sortedImages.map(img => ({ file: { src: img.file.src }, title: (img as any).title, description: (img as any).description }))) }}>
+    (function() {
+        // Parse images data
+        const allImages = JSON.parse(images);
+        
+        function setActiveImage(index) {
+            const activeImage = allImages[index];
+            if (!activeImage) return;
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('button[data-image-index]').forEach((button) => {
+                button.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            const activeImageElement = document.querySelector(`button[data-image-index="${index}"]`);
+            if (activeImageElement) {
+                activeImageElement.classList.add('active');
+            }
+            
+            updateMainImage(index);
+        }
+
+        function updateMainImage(index) {
+            const activeImage = allImages[index];
+            if (!activeImage) return;
+            
+            const mainImageElement = document.querySelector('.main-image');
+            if (mainImageElement && activeImage.file && activeImage.file.src) {
+                mainImageElement.src = activeImage.file.src;
+            }
+        }
+
+        // Use event delegation - attach to a stable container
+        function handleThumbnailClick(e) {
+            const button = e.target.closest('button[data-image-index]');
+            if (!button) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            const index = parseInt(button.getAttribute('data-image-index') || '0', 10);
+            setActiveImage(index);
+        }
+
+        // Initialize - use event delegation on thumbnails container
+        function init() {
+            // Find the thumbnails container
+            const thumbnailsContainer = document.querySelector('.thumbnails-container');
+            if (!thumbnailsContainer) return;
+            
+            // Remove any existing listener first
+            thumbnailsContainer.removeEventListener('click', handleThumbnailClick);
+            // Add new listener
+            thumbnailsContainer.addEventListener('click', handleThumbnailClick);
+        }
+
+        // Initialize on DOM ready
+        function setup() {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                // Small delay to ensure DOM is ready
+                setTimeout(init, 0);
+            }
+        }
+
+        setup();
+
+        // Handle Astro view transitions
+        document.addEventListener('astro:page-load', () => {
+            setTimeout(init, 0);
+        });
+    })();
+</script>

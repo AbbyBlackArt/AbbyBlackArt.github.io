@@ -35,7 +35,8 @@ const exhibitions = defineCollection({
         title: z.string(),
         description: z.string(),
         location: z.string(),
-        date: z.coerce.date(),
+        startDate: z.coerce.date(),
+        endDate: z.coerce.date().optional(),
         draft: z.boolean().optional(),
     }),
 });

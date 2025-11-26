@@ -1,0 +1,56 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { TWOD } from "@consts";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const images = await getCollection("images");
+const drawingPainting = images.find(image => image.data.categories.includes("Drawing/Painting"));
+const printmaking = images.find(image => image.data.categories.includes("Printmaking"));
+---
+
+
+<PageLayout title={TWOD.TITLE} description={TWOD.DESCRIPTION}>
+  <Container>
+    <div class="flex flex-wrap justify-center gap-4 align-items-center">
+        <div class="flex justify-center flex-row md:w-2/5">
+            <Link 
+              href="/2d/drawing-painting"
+              underline={false}
+            >
+              {drawingPainting ? (
+                <figure>
+                    <Image
+                        src={drawingPainting.data.image}
+                        alt={drawingPainting.data.title}
+                        class="max-w-xl w-full h-auto aspect-[4/3] object-cover"
+                      />
+                      <figcaption class="text-center">Drawing/Painting</figcaption>
+                  </figure>
+              ) : (
+                <>Drawing/Painting</>
+              )}
+            </Link>
+          </div>
+          <div class="flex justify-center flex-row md:w-2/5">
+              <Link href="/2d/printmaking" underline={false}>
+                {printmaking ? (
+                  <figure>
+                      <Image
+                          loading="lazy"
+                          src={printmaking.data.image}
+                          alt={printmaking.data.title}
+                          class="max-w-xl w-full h-auto aspect-[4/3] object-cover"
+                      />
+                      <figcaption class="text-center text-black">Printmaking</figcaption>
+                  </figure>
+              ) : (
+                <>Printmaking</>
+              )}
+            </Link>
+          </div>
+      </div>
+  </Container>
+</PageLayout>``

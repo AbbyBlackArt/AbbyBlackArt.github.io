@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import type { CollectionEntry } from "astro:content";
+
+
+export async function getStaticPaths() {
+    const exhibitions = (await getCollection("exhibitions"))
+        .filter(exhibition => !exhibition.data.draft)
+            return exhibitions.map((exhibition) => ({
+            params: { slug: exhibition.slug },
+            props: exhibition,
+        }));
+}
+
+type Props = CollectionEntry<"exhibitions">;
+
+const exhibition = Astro.props;
+---
+
+<PageLayout title={exhibition.data.title} description={exhibition.data.description}>
+    <Container>
+        <div class="space-y-10">
+            <div class="animate font-semibold text-black dark:text-white">
+                {exhibition.data.title}
+            </div>
+            <div class="text-black/70 dark:text-white/70 leading-relaxed"> {exhibition.data.description} </div>
+            <div class="text-black/70 dark:text-white/70 leading-relaxed"> {exhibition.data.location} </div>
+            <div class="text-black/70 dark:text-white/70 leading-relaxed"> {exhibition.data.startDate} - {exhibition.data.endDate} </div>
+        </div>
+    </Container>
+</PageLayout>

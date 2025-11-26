@@ -8,14 +8,14 @@ import Gallery from "@components/Gallery.astro";
 const data = (await getCollection("works"))
     .filter(work => !work.data.draft)
     .filter(work => work.data.date && work.data.date.getFullYear() < new Date().getFullYear())
-    .sort((a, b) => b.data.date!.valueOf() - a.data.date!.valueOf());
+    .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
 
 type Acc = {
     [year: string]: CollectionEntry<"works">[];
 }
 
 const works = data.reduce((acc: Acc, work) => {
-    const year = work.data.date!.getFullYear().toString();
+    const year = work.data.date?.getFullYear().toString() ?? '';
     if (!acc[year]) {
         acc[year] = [];
     }
@@ -40,7 +40,9 @@ const years = Object.keys(works).sort((a, b) => parseInt(b) - parseInt(a));
                             {year}
                         </div>
                     </section>
-                    <Gallery images={works[year]} />
+                    <section class="animate">
+                        <Gallery works={works[year]} />
+                    </section>
                 ))}
             </div>
         </div>
