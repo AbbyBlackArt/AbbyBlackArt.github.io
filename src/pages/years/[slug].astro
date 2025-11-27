@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { Image } from "astro:assets";
+import Gallery from '@components/Gallery.astro';
+
+export async function getStaticPaths() {
+    const works = await getCollection("works");
+    const allYears = Array.from({ length: new Date().getFullYear() - 2020 }, (_, i) => new Date().getFullYear() - i);
+    return allYears.map((year) => ({
+        params: { slug: year.toString() },
+        props: { year: year.toString() },
+    }));
+}
+
+type Props = {
+    year: string;
+};
+
+const { year } = Astro.props;
+
+const allWorks = await getCollection("works");
+
+const works = allWorks.filter((work) => {
+    if (!work.data.date) return false;
+    return work.data.date.getFullYear().toString() === year;
+});
+
+const yearDisplayName = year.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+---
+
+<PageLayout title={yearDisplayName} description={`Images from ${yearDisplayName}`}>
+    <Container>
+        <h1 class="animate text-2xl font-semibold text-black dark:text-white my-10">
+            {yearDisplayName}
+        </h1>
+        {works.length === 0 ? (
+            <p class="animate">No works found in this year.</p>
+        ) : (
+            <div class="flex flex-wrap justify-center gap-4 align-items-center">
+                <Gallery works={works?.map(work => ({
+                    slug: work.slug,
+                    title: work.data.title,
+                    summary: work.data.summary,
+                    images: work.data.images.map(image => ({
+                        file: image.file,
+                    })),
+                })) ?? []}/>
+            </div>
+        )}
+    </Container>
+</PageLayout>

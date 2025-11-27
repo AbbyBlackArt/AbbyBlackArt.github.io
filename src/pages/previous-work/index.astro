@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import { PREVIOUS_WORK } from "@consts";
+import Gallery from "@components/Gallery.astro";
+import type { CollectionEntry } from "astro:content";
+
+const data = (await getCollection("works"))
+    .filter(work => !work.data.draft)
+    .filter(work => work.data.date && work.data.date.getFullYear() < new Date().getFullYear())
+    .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
+
+type Acc = {
+    [year: string]: CollectionEntry<"works">[];
+}
+
+const works = data.reduce((acc: Acc, work) => {
+    const year = work.data.date?.getFullYear().toString() ?? '';
+    if (!acc[year]) {
+        acc[year] = [];
+    }
+    acc[year].push(work);
+    return acc;
+}, {});
+
+const years = Object.keys(works).sort((a, b) => parseInt(b) - parseInt(a));
+
+---
+
+<PageLayout title={PREVIOUS_WORK.TITLE} description={PREVIOUS_WORK.DESCRIPTION}>
+    <Container>
+        <div class="space-y-10">
+            <div class="animate font-semibold text-black dark:text-white">
+                {PREVIOUS_WORK.TITLE}
+            </div>
+            <div class="space-y-4">
+                {years.map(year => (
+                    <section class="animate space-y-4">
+                        <div class="font-semibold text-black dark:text-white">
+                            {year}
+                        </div>
+                    </section>
+                    <Gallery works={works[year]?.map(work => ({
+                        slug: work.slug,
+                        title: work.data.title,
+                        summary: work.data.summary,
+                        images: work.data.images.map(image => ({
+                            file: image.file,
+                        })),
+                    })) ?? []} />
+                ))}
+            </div>
+        </div>
+    </Container>
+</PageLayout>

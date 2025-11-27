@@ -1,0 +1,266 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import WorkLayout from "@layouts/WorkLayout.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import { Image } from "astro:assets";
+import Link from "@components/Link.astro";
+import { imageConfig } from "astro:assets";
+
+export async function getStaticPaths() {
+  const works = (await getCollection("works"))
+    .filter(work => !work.data.draft);
+  return works.map((work) => ({
+    params: { slug: work.slug },
+    props: work,
+  }));
+}
+
+type Props = CollectionEntry<"works">;
+
+const work = Astro.props;
+
+// Sort images by order if provided, otherwise keep array order
+const sortedImages = [...work.data.images].sort((a, b) => {
+  const orderA = (a as any).order ?? Infinity;
+  const orderB = (b as any).order ?? Infinity;
+  return orderA - orderB;
+});
+---
+
+<WorkLayout work={work}>
+    <!-- Back button - top left -->
+    <button
+      onclick="window.history.back()"
+      class="animate absolute top-4 left-4 z-50 p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+      aria-label="Back to home"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-6 h-6"
+      >
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 5 12 12 19"></polyline>
+      </svg>
+    </button>
+
+    <!-- Main content: description at start, images at end -->
+    <div class="flex flex-col md:flex-row h-full">
+      <!-- Description section - left on desktop, bottom on mobile -->
+      <div class="animate flex-shrink-0 md:w-1/3 lg:w-1/4 p-6 md:p-8 overflow-y-auto bg-white dark:bg-stone-900 border-r border-black/10 dark:border-white/10 order-2 md:order-1 scrollbar-outside">
+        <div class="space-y-4">
+          {work.data.date && (
+            <div class="text-sm text-black/60 dark:text-white/60">
+              <FormattedDate date={work.data.date} />
+            </div>
+          )}
+          <h1 class="text-2xl md:text-3xl font-semibold text-black dark:text-white">
+            {work.data.title}
+          </h1>
+          {work.data.summary && (
+            <div class="text-black/70 dark:text-white/70 leading-relaxed">
+              {work.data.summary}
+            </div>
+          )}
+          {work.data.categories && work.data.categories.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {work.data.categories.map((category) => (
+                <span class="text-xs px-3 py-1 bg-black/10 dark:bg-white/10 rounded-full">
+                  {category}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Images section - right on desktop, top on mobile -->
+      <div class="animate flex-1 order-1 md:order-2 md:h-full overflow-hidden">
+        <div class="p-4 md:p-8 flex flex-col h-full">
+            <!-- Main image container - takes remaining space, image shrinks to fit -->
+            <div class="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
+                <Image
+                    src={work.data.images[0].file}
+                    alt={work.data.images[0].title || work.data.title}
+                    class="main-image max-w-full max-h-full w-auto h-auto"
+                    height={600}
+                    width={800}
+                    loading="eager"
+                    style="--object-fit: contain;"
+                />
+            </div>
+            <!-- Thumbnails - fixed height, always at bottom -->
+            <div class="thumbnails-container flex flex-row gap-4 h-20 flex-shrink-0 mt-4 overflow-x-auto scrollbar-thin scrollbar-transparent">
+                {sortedImages.map((imageData, index) => (
+                    <button
+                        class={`h-full aspect-square flex-shrink-0 ${index == 0 ? 'active' : ''}`}
+                        data-image-index={index}
+                        aria-label={`View image ${imageData.title || work.data.title}`}
+                    >
+                        <Image src={imageData.file} alt={imageData.title || work.data.title} class="aspect-square h-full w-full object-cover" loading="lazy" />
+                    </button>
+                ))}   
+            </div>
+        </div>
+      </div>
+    </div>
+</WorkLayout>
+
+<style>
+    .active {
+        border: 2px solid rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        padding: 2px;
+        transition: border 0.3s ease-in-out;
+    }
+    html.dark .active {
+        border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Image uses contain by default */
+    .main-image {
+        object-fit: contain;
+    }
+    
+    /* During view transition, use cover to match gallery */
+    ::view-transition-new(work-*-main) {
+        object-fit: cover;
+    }
+    
+    /* Ensure container maintains stable size during transition */
+    [data-transition-container] {
+        /* Use viewport height to ensure stable size */
+        min-height: 60vh;
+    }
+    
+    /* On larger screens, use percentage of container */
+    @media (min-width: 768px) {
+        [data-transition-container] {
+            min-height: 70vh;
+        }
+    }
+    
+    /* Scrollbar styling - outside content, no background */
+    /* Firefox - using Tailwind arbitrary values via class */
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
+    
+    .scrollbar-transparent {
+        scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    }
+    
+    html.dark .scrollbar-transparent {
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+    
+    /* Webkit browsers (Chrome, Safari, Edge) - minimal custom CSS */
+    .thumbnails-container::-webkit-scrollbar,
+    .scrollbar-outside::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background: transparent;
+    }
+    
+    .thumbnails-container::-webkit-scrollbar-track,
+    .scrollbar-outside::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .thumbnails-container::-webkit-scrollbar-thumb,
+    .scrollbar-outside::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 0.25rem;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+    }
+    
+    html.dark .thumbnails-container::-webkit-scrollbar-thumb,
+    html.dark .scrollbar-outside::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .thumbnails-container::-webkit-scrollbar-thumb:hover,
+    .scrollbar-outside::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.5);
+        background-clip: padding-box;
+    }
+    
+    html.dark .thumbnails-container::-webkit-scrollbar-thumb:hover,
+    html.dark .scrollbar-outside::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+</style>
+
+<script define:vars={{ images: JSON.stringify(sortedImages.map(img => ({ file: { src: img.file.src }, title: (img as any).title, description: (img as any).description }))) }}>
+    (function() {
+        const allImages = JSON.parse(images);
+        
+        function setActiveImage(index) {
+            const activeImage = allImages[index];
+            if (!activeImage) return;
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('button[data-image-index]').forEach((button) => {
+                button.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            const activeImageElement = document.querySelector(`button[data-image-index="${index}"]`);
+            if (activeImageElement) {
+                activeImageElement.classList.add('active');
+            }
+            
+            updateMainImage(index);
+        }
+
+        function updateMainImage(index) {
+            const activeImage = allImages[index];
+            if (!activeImage) return;
+            
+            const mainImageElement = document.querySelector('.main-image');
+            if (mainImageElement && activeImage.file && activeImage.file.src) {
+                mainImageElement.src = activeImage.file.src;
+            }
+        }
+
+        // Use event delegation for better reliability
+        function handleThumbnailClick(e) {
+            const button = e.target.closest('button[data-image-index]');
+            if (!button) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            const index = parseInt(button.getAttribute('data-image-index') || '0', 10);
+            setActiveImage(index);
+        }
+
+        function init() {
+            const thumbnailsContainer = document.querySelector('.thumbnails-container');
+            if (!thumbnailsContainer) return;
+            
+            // Remove any existing listeners
+            thumbnailsContainer.removeEventListener('click', handleThumbnailClick);
+            
+            // Add fresh listeners
+            thumbnailsContainer.addEventListener('click', handleThumbnailClick);
+        }
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            setTimeout(init, 0);
+        }
+
+        // Handle Astro view transitions
+        document.addEventListener('astro:page-load', () => {
+            setTimeout(init, 0);
+        });
+    })();
+</script>

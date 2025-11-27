@@ -1,6 +1,0 @@
-{{ define "main" }}
-<h1 class="text-center text-3xl font-bold">{{ .Title }}</h1>
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full justify-items-center">
-    {{ range $index, $page := .Pages }} {{ partial "entry.html" $page }} {{ end }}
-</div>
-{{ end }}
