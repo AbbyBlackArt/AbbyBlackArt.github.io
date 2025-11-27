@@ -1,16 +1,17 @@
 ---
 import { Image } from "astro:assets";
 import Link from "@components/Link.astro";
-import type { ImageFunction } from "astro:content";
 
 type Props = {
   works: {
     slug: string;
     title: string;
     summary: string;
-    images: {file: {
-      src: string;
-    }; title: string; description: string;}[] | undefined;
+    images: {
+      file: ImageMetadata;
+      title: string;
+      description: string;
+    }[];
   }[];
   // works: CollectionEntry<"works">[];
   basePath?: string; // Optional base path for work links, defaults to "/works"

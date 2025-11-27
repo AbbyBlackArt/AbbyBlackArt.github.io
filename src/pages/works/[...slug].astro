@@ -1,10 +1,8 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import WorkLayout from "@layouts/WorkLayout.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { Image } from "astro:assets";
-import Link from "@components/Link.astro";
-import { imageConfig } from "astro:assets";
 
 export async function getStaticPaths() {
   const works = (await getCollection("works"))
@@ -14,8 +12,6 @@ export async function getStaticPaths() {
     props: work,
   }));
 }
-
-type Props = CollectionEntry<"works">;
 
 const work = Astro.props;
 
@@ -197,7 +193,7 @@ const sortedImages = [...work.data.images].sort((a, b) => {
     }
 </style>
 
-<script define:vars={{ images: JSON.stringify(sortedImages.map(img => ({ file: { src: img.file.src }, title: (img as any).title, description: (img as any).description }))) }}>
+<script is:inline define:vars={{ images: JSON.stringify(sortedImages.map(img => ({ file: { src: img.file.src }, title: (img as any).title, description: (img as any).description }))) }}>
     (function() {
         const allImages = JSON.parse(images);
         

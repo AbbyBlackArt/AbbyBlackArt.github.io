@@ -4,7 +4,6 @@ import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import { EXHIBITIONS } from "@consts";
-import ArrowCard from "@components/ArrowCard.astro";
 import Gallery from "@components/Gallery.astro";
 
 const data = (await getCollection("exhibitions"))
@@ -45,11 +44,13 @@ console.log(exhibitions["2025"][0].data.images?.[0].file);
                             slug: exhibition.slug,
                             title: exhibition.data.title,
                             summary: exhibition.data.description,
-                            images: exhibition.data.images?.map(image => ({
+                            images: (exhibition.data.images ?? []).map(image => ({
                                 file: image.file,
+                                title: image.title ?? "",
+                                description: image.description ?? "",
                             })),
                             
-                        }))} basePath="/exhibitions"/>
+                        })) ?? []} basePath="/exhibitions"/>
                     </section>
                 ))}
             </div>
