@@ -8,9 +8,11 @@ import AbbyBlackPhoto from "../assets/AbbyBlackPhoto.jpg";
 
 const images = await getCollection("works");
 // Get three different images for the three links
-const defaultImage = images[3].data.images[0] || images[Math.floor(Math.random() * images.length)];
+const defaultImage = images.find(image => image.data.title == "Grow")?.data.images[0] || images[Math.floor(Math.random() * images.length)];
 const image2025 = (images.find(image => image.data.title && image.data.title === "Sun Prints") || images[Math.floor(Math.random() * images.length)]).data.images[7];
-const imagePreviousWork = (images.filter(image => image.data.date && image.data.date.getFullYear() < 2025)[3] || images[Math.floor(Math.random() * images.length)]).data.images[0];
+// console.log (images.filter(image => image.data.date && image.data.date.getFullYear() < 2025))
+const imagePreviousWork = (images.find(image => image.data.title == "Couch") || images[Math.floor(Math.random() * images.length)]).data.images[0];
+console.log('imagePreviousWork', imagePreviousWork)
 const imageAbout = AbbyBlackPhoto;
 const exhibitions = await getCollection("exhibitions");
 const imageExhibitions = exhibitions[0]?.data.images?.[0] || exhibitions[Math.floor(Math.random() * exhibitions.length)]?.data.images?.[0];
@@ -26,7 +28,7 @@ const imageAboutUrl = imageAbout ? (await getImage({ src: imageAbout })).src : '
   <div class="home-background-wrapper">
     <div class="home-background home-bg-default" style={`background-image: url('${defaultImageUrl}');`}></div>
     <div class="home-background home-bg-2025" style={`background-image: url('${image2025Url}');`}></div>
-    <div class="home-background home-bg-previous" style={`background-image: url('${imagePreviousWorkUrl}');`}></div>
+    <div class="home-background home-bg-previous-work" style={`background-image: url('${imagePreviousWorkUrl}');`}></div>
     <div class="home-background home-bg-exhibitions" style={`background-image: url('${imageExhibitionsUrl}');`}></div>
     <div class="home-background home-bg-about" style={`background-image: url('${imageAboutUrl}');`}></div>
     <nav class="home-nav">
@@ -123,7 +125,7 @@ const imageAboutUrl = imageAbout ? (await getImage({ src: imageAbout })).src : '
 
     /* Change background on hover using :has() selector */
     .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-default,
-    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-previous,
+    .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-previous-work,
     .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-exhibitions,
     .home-background-wrapper:has(.nav-link-2025:hover) .home-bg-about {
       opacity: 0;
@@ -133,20 +135,20 @@ const imageAboutUrl = imageAbout ? (await getImage({ src: imageAbout })).src : '
       opacity: 1;
     }
 
-    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-default,
-    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-2025,
-    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-exhibitions,
-    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-about {
+    .home-background-wrapper:has(.nav-link-previous-work:hover) .home-bg-default,
+    .home-background-wrapper:has(.nav-link-previous-work:hover) .home-bg-2025,
+    .home-background-wrapper:has(.nav-link-previous-work:hover) .home-bg-exhibitions,
+    .home-background-wrapper:has(.nav-link-previous-work:hover) .home-bg-about {
       opacity: 0;
     }
 
-    .home-background-wrapper:has(.nav-link-previous:hover) .home-bg-previous {
+    .home-background-wrapper:has(.nav-link-previous-work:hover) .home-bg-previous-work {
       opacity: 1;
     }
 
     .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-default,
     .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-2025,
-    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-previous,
+    .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-previous-work,
     .home-background-wrapper:has(.nav-link-exhibitions:hover) .home-bg-about {
       opacity: 0;
     }
@@ -157,7 +159,7 @@ const imageAboutUrl = imageAbout ? (await getImage({ src: imageAbout })).src : '
 
     .home-background-wrapper:has(.nav-link-about:hover) .home-bg-default,
     .home-background-wrapper:has(.nav-link-about:hover) .home-bg-2025,
-    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-previous,
+    .home-background-wrapper:has(.nav-link-about:hover) .home-bg-previous-work,
     .home-background-wrapper:has(.nav-link-about:hover) .home-bg-exhibitions {
       opacity: 0;
     }
