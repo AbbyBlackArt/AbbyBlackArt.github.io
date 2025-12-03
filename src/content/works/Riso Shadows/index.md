@@ -1,5 +1,5 @@
 ---
-title: "Shadows"
+title: "Moments"
 summary: "Risograph"
 images:
     - file: "./Abby_Shadow1.jpg"

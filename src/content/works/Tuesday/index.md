@@ -1,5 +1,5 @@
 ---
-title: "Tuesday, January 7, 2025 - 3:09PM"
+title: "Tuesday, 3:09PM"
 summary: "Risograph"
 images:
     - file: "./Tuesday, January 7, 2025 - 3.09 PM.jpg"

@@ -1,6 +1,6 @@
 ---
 title: "Present"
-description: "Yo yo yo"
+description: "A group show with Abby Spears."
 location: "The Weight Room Gallery, Brigham Young University West Campus"
 images: 
     - file: "./Titlewall_4788x4000_300dpi.jpg"

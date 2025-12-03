@@ -1,6 +1,6 @@
 ---
 title: "Sun Prints"
-summary: "Lots and lots and lots of sun prints"
+summary: "Anthotype"
 images:
     - file: "./SunPrint1.jpg"
     - file: "./SunPrint2.jpg"

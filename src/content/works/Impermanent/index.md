@@ -1,5 +1,5 @@
 ---
-title: "Grow"
+title: "Impermanent"
 summary: "Impermanent"
 images:
     - file: "./Impermanent color balance 2.jpg"
