@@ -15,7 +15,7 @@ const imagePreviousWork = (images.find(image => image.data.title == "Couch") || 
 console.log('imagePreviousWork', imagePreviousWork)
 const imageAbout = AbbyBlackPhoto;
 const exhibitions = await getCollection("exhibitions");
-const imageExhibitions = exhibitions[0]?.data.images?.[0] || exhibitions[Math.floor(Math.random() * exhibitions.length)]?.data.images?.[0];
+const imageExhibitions = exhibitions[0]?.data.images?.[2] || exhibitions[Math.floor(Math.random() * exhibitions.length)]?.data.images?.[0];
 // Get optimized image URLs for CSS background
 const defaultImageUrl = defaultImage ? (await getImage({ src: defaultImage.file })).src : '';
 const image2025Url = image2025 ? (await getImage({ src: image2025.file })).src : '';
