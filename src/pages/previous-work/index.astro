@@ -41,16 +41,18 @@ const years = Object.keys(works).sort((a, b) => parseInt(b) - parseInt(a));
                             {year}
                         </div>
                     </section>
-                    <Gallery works={works[year]?.map(work => ({
-                        slug: work.slug,
-                        title: work.data.title,
-                        summary: work.data.summary ?? "",
-                        images: work.data.images.map(image => ({
-                            file: image.file,
-                            title: image.title ?? "",
-                            description: image.description ?? "",
-                        })),
-                    })) ?? []} />
+                    <div class="animate">
+                        <Gallery works={works[year]?.map(work => ({
+                            slug: work.slug,
+                            title: work.data.title,
+                            summary: work.data.summary ?? "",
+                            images: work.data.images.map(image => ({
+                                file: image.file,
+                                title: image.title ?? "",
+                                description: image.description ?? "",
+                            })),
+                        })) ?? []} />
+                    </div>
                 ))}
             </div>
         </div>

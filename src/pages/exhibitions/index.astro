@@ -25,7 +25,6 @@ const exhibitions = data.reduce((acc: Acc, exhibition) => {
 
 const years = Object.keys(exhibitions).sort((a, b) => parseInt(b) - parseInt(a));
 
-console.log(exhibitions["2025"][0].data.images?.[0].file);
 ---
 
 <PageLayout title={EXHIBITIONS.TITLE} description={EXHIBITIONS.DESCRIPTION}>
@@ -40,18 +39,18 @@ console.log(exhibitions["2025"][0].data.images?.[0].file);
                         <div class="font-semibold text-black dark:text-white">
                             {year}
                         </div>
-                        <Gallery works={exhibitions[year]?.map(exhibition => ({
-                            slug: exhibition.slug,
-                            title: exhibition.data.title,
-                            summary: exhibition.data.description,
-                            images: (exhibition.data.images ?? []).map(image => ({
-                                file: image.file,
-                                title: image.title ?? "",
-                                description: image.description ?? "",
-                            })),
-                            
-                        })) ?? []} basePath="/exhibitions"/>
                     </section>
+                    <Gallery works={exhibitions[year]?.map(exhibition => ({
+                        slug: exhibition.slug,
+                        title: exhibition.data.title,
+                        summary: exhibition.data.description,
+                        images: (exhibition.data.images ?? []).map(image => ({
+                            file: image.file,
+                            title: image.title ?? "",
+                            description: image.description ?? "",
+                        })),
+                    
+                    })) ?? []} basePath="/exhibitions"/>
                 ))}
             </div>
         </div>
